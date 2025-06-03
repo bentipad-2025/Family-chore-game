@@ -445,13 +445,30 @@
             color: #4a5568;
         }
         
-        .pin-prompt {
+        .spelling-game {
             margin: 20px 0;
-            text-align: center;
         }
         
-        .pin-prompt input {
-            margin-bottom: 20px;
+        .spelling-word-display {
+            font-size: 2em;
+            background: linear-gradient(45deg, #ff69b4, #ffc0cb);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .assignment-editor label {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .assignment-editor label:hover {
+            background-color: #f0f8ff;
         }
         
         .challenge-question {
@@ -626,14 +643,26 @@
             <div class="admin-section">
                 <h2 class="admin-title">➕ Create New Quest</h2>
                 <div class="input-group">
-                    <input type="text" id="newChoreName" placeholder="Quest name">
+                    <input type="text" id="newChoreName" placeholder="Quest name (e.g., 'clean the drawers')">
                     <input type="number" id="newChorePoints" placeholder="Stars" min="1" max="10" value="1">
                     <select id="newChoreFreq">
                         <option value="daily">Daily Quest</option>
                         <option value="weekly">Weekly Quest</option>
                         <option value="monthly">Epic Quest</option>
                     </select>
-                    <button class="add-btn" onclick="addChore()">Create Quest</button>
+                </div>
+                <div class="input-group">
+                    <label style="font-weight: bold; margin-right: 10px;">Assign to:</label>
+                    <label style="margin-right: 15px;">
+                        <input type="checkbox" id="assignChild1" checked> Harry (Wizard)
+                    </label>
+                    <label style="margin-right: 15px;">
+                        <input type="checkbox" id="assignChild2" checked> Princess (Royal)
+                    </label>
+                </div>
+                <button class="add-btn" onclick="addChore()">Create Quest</button>
+                <div style="margin-top: 10px; font-size: 0.9em; color: #666; font-style: italic;">
+                    💡 Tip: The game will automatically theme your chore names! "Clean the drawers" becomes "Purify the magical storage chambers" for Harry and "Beautify the royal treasure drawers" for Princess.
                 </div>
             </div>
             
@@ -724,11 +753,11 @@
         let gameData = {
             starsTarget: 10,
             chores: [
-                { id: 1, name: "Make your magical bed", points: 2, frequency: "daily" },
-                { id: 2, name: "Organize the toy kingdom", points: 1, frequency: "daily" },
-                { id: 3, name: "Clean the royal chambers", points: 3, frequency: "weekly" },
-                { id: 4, name: "Sort the enchanted wardrobe", points: 2, frequency: "daily" },
-                { id: 5, name: "Organize the shoe palace", points: 4, frequency: "monthly" }
+                { id: 1, name: "Make bed", points: 2, frequency: "daily", assignedTo: ["child1", "child2"] },
+                { id: 2, name: "Put away toys", points: 1, frequency: "daily", assignedTo: ["child1", "child2"] },
+                { id: 3, name: "Clean room", points: 3, frequency: "weekly", assignedTo: ["child1", "child2"] },
+                { id: 4, name: "Put away clothes", points: 2, frequency: "daily", assignedTo: ["child1", "child2"] },
+                { id: 5, name: "Organise shoe cupboard", points: 4, frequency: "monthly", assignedTo: ["child1", "child2"] }
             ],
             players: {
                 child1: { 
@@ -750,12 +779,97 @@
             }
         };
         
+        // Theme conversion system
+        const choreThemes = {
+            child1: { // Harry Potter themes
+                keywords: {
+                    'bed': 'magical dormitory bed',
+                    'toys': 'magical artifacts and spell components',
+                    'room': 'Hogwarts dormitory',
+                    'clothes': 'wizard robes and magical garments',
+                    'shoes': 'magical footwear collection',
+                    'drawers': 'magical storage chambers',
+                    'kitchen': 'potions laboratory',
+                    'dishes': 'cauldrons and magical vessels',
+                    'bathroom': 'magical washroom',
+                    'books': 'spellbooks and magical tomes',
+                    'desk': 'study table for magical learning',
+                    'floor': 'chamber floors',
+                    'windows': 'enchanted glass portals',
+                    'trash': 'magical waste disposal',
+                    'laundry': 'magical garment cleaning',
+                    'pets': 'magical creatures'
+                },
+                verbs: {
+                    'make': 'enchant',
+                    'clean': 'purify',
+                    'organize': 'arrange magically',
+                    'put away': 'store in magical order',
+                    'tidy': 'cast tidying charms on',
+                    'wash': 'cleanse with magic',
+                    'feed': 'tend to',
+                    'water': 'nurture with magical essence'
+                }
+            },
+            child2: { // Princess themes
+                keywords: {
+                    'bed': 'royal princess bed',
+                    'toys': 'royal treasures and unicorn friends',
+                    'room': 'princess chambers',
+                    'clothes': 'royal gowns and magical dresses',
+                    'shoes': 'royal shoe collection',
+                    'drawers': 'royal treasure drawers',
+                    'kitchen': 'royal kitchen',
+                    'dishes': 'royal china and crystal',
+                    'bathroom': 'royal powder room',
+                    'books': 'fairy tale collection',
+                    'desk': 'royal writing desk',
+                    'floor': 'palace floors',
+                    'windows': 'castle windows',
+                    'trash': 'kingdom waste management',
+                    'laundry': 'royal garment care',
+                    'pets': 'royal companions'
+                },
+                verbs: {
+                    'make': 'prepare royally',
+                    'clean': 'beautify',
+                    'organize': 'arrange elegantly',
+                    'put away': 'store in royal order',
+                    'tidy': 'make palace-perfect',
+                    'wash': 'cleanse with royal care',
+                    'feed': 'care for',
+                    'water': 'tend with princess magic'
+                }
+            }
+        };
+        
+        // Convert chore name to themed version
+        function getThemedChoreName(originalName, childId) {
+            if (!choreThemes[childId]) return originalName;
+            
+            let themedName = originalName.toLowerCase();
+            const theme = choreThemes[childId];
+            
+            // Replace keywords
+            Object.keys(theme.keywords).forEach(keyword => {
+                const regex = new RegExp(keyword, 'gi');
+                themedName = themedName.replace(regex, theme.keywords[keyword]);
+            });
+            
+            // Replace verbs
+            Object.keys(theme.verbs).forEach(verb => {
+                const regex = new RegExp(`\\b${verb}\\b`, 'gi');
+                themedName = themedName.replace(regex, theme.verbs[verb]);
+            });
+            
+            // Capitalize first letter
+            return themedName.charAt(0).toUpperCase() + themedName.slice(1);
+        }
+        
         let currentMode = 'parent';
         let nextChoreId = 6;
         let parentAuthenticated = false;
         const PARENT_PIN = "1234"; // Change this to your preferred PIN
-        
-        // Mini-game challenges for different themes
         const miniGameChallenges = {
             child1: { // Harry's challenges - harder and more varied
                 math: [
@@ -792,31 +906,37 @@
                     }
                 ]
             },
-            child2: { // Princess challenges - age-appropriate for 6-year-old
-                math: [
-                    { question: "If you have 5 unicorns and 3 more join you, how many unicorns total?", answer: "8" },
-                    { question: "A princess has 12 jewels. She gives 4 to her sister. How many does she have left?", answer: "8" },
-                    { question: "If each castle tower has 6 windows and there are 2 towers, how many windows total?", answer: "12" },
-                    { question: "You bake 15 royal cookies and eat 3. How many are left?", answer: "12" }
+            child2: { // Princess challenges - easier for 6-year-old
+                spelling: [
+                    { question: "Spell this magical word:", word: "LOVE", display: "L-O-V-E" },
+                    { question: "Spell this royal word:", word: "ROSE", display: "R-O-S-E" },
+                    { question: "Spell this pretty word:", word: "STAR", display: "S-T-A-R" },
+                    { question: "Spell this sweet word:", word: "CAKE", display: "C-A-K-E" },
+                    { question: "Spell this magical word:", word: "MOON", display: "M-O-O-N" },
+                    { question: "Spell this beautiful word:", word: "PINK", display: "P-I-N-K" },
+                    { question: "Spell this royal word:", word: "CROWN", display: "C-R-O-W-N" },
+                    { question: "Spell this magical word:", word: "MAGIC", display: "M-A-G-I-C" }
                 ],
-                riddles: [
-                    { question: "I have a horn and I'm magical white. In fairy tales, I'm quite a sight. What am I?", answer: "UNICORN" },
-                    { question: "I live in a castle, wear a crown so bright. I help others and do what's right. What am I?", answer: "PRINCESS" },
-                    { question: "I'm tall and grand, with towers high. In fairy tales, I touch the sky. What am I?", answer: "CASTLE" },
-                    { question: "I sparkle and shine, on fingers I go. In treasure chests, I often show. What am I?", answer: "RING" }
+                counting: [
+                    { question: "Count the hearts: ❤️❤️❤️", answer: "3" },
+                    { question: "Count the stars: ⭐⭐⭐⭐⭐", answer: "5" },
+                    { question: "Count the flowers: 🌸🌸🌸🌸", answer: "4" },
+                    { question: "Count the unicorns: 🦄🦄", answer: "2" },
+                    { question: "Count the crowns: 👑👑👑👑👑👑", answer: "6" }
                 ],
-                colors: [
-                    { question: "Mix red and blue to make what color?", answer: "PURPLE" },
-                    { question: "Mix yellow and red to make what color?", answer: "ORANGE" },
-                    { question: "What color is the sun?", answer: "YELLOW" },
-                    { question: "What color do you get when you mix all rainbow colors?", answer: "WHITE" }
+                easy_math: [
+                    { question: "What is 2 + 1?", answer: "3" },
+                    { question: "What is 4 + 1?", answer: "5" },
+                    { question: "What is 3 + 2?", answer: "5" },
+                    { question: "What is 5 - 1?", answer: "4" },
+                    { question: "What is 6 - 2?", answer: "4" }
                 ],
-                memory: [
-                    {
-                        question: "Remember these royal items:",
-                        sequence: ["CROWN", "WAND", "JEWEL"],
-                        display: "CROWN → WAND → JEWEL"
-                    }
+                easy_questions: [
+                    { question: "What color do you get when you mix red and white?", answer: "PINK" },
+                    { question: "What do princesses wear on their heads?", answer: "CROWN" },
+                    { question: "What magical creature has a horn?", answer: "UNICORN" },
+                    { question: "What shape is the sun?", answer: "CIRCLE" },
+                    { question: "How many legs does a unicorn have?", answer: "4" }
                 ]
             }
         };
@@ -1011,7 +1131,12 @@
                 const player = gameData.players[child];
                 let html = '';
                 
-                gameData.chores.forEach(chore => {
+                // Only show chores assigned to this child
+                const assignedChores = gameData.chores.filter(chore => 
+                    chore.assignedTo && chore.assignedTo.includes(child)
+                );
+                
+                assignedChores.forEach(chore => {
                     const isActive = player.activeQuests.includes(chore.id);
                     const isPending = player.pendingChores.includes(chore.id);
                     const isCompleted = player.completedChores.includes(chore.id);
@@ -1022,6 +1147,52 @@
                     if (isPending) {
                         statusHtml = '<div class="quest-status status-pending">🕐 Awaiting approval from Quest Master</div>';
                         actionHtml = '';
+                    } else if (isCompleted) {
+                        statusHtml = '<div class="quest-status status-completed">✅ Quest completed!</div>';
+                        actionHtml = '';
+                    } else if (isActive) {
+                        statusHtml = '<div class="quest-status">🎯 Quest in progress</div>';
+                        actionHtml = `<button class="action-btn complete-quest" onclick="completeQuest(${chore.id}, '${child}')">Complete Quest!</button>`;
+                    } else {
+                        statusHtml = '<div class="quest-status">📜 Available</div>';
+                        actionHtml = `<button class="action-btn start-quest" onclick="startQuest(${chore.id}, '${child}')">Start Quest</button>`;
+                    }
+                    
+                    const difficultyStars = '★'.repeat(chore.points) + '☆'.repeat(5 - chore.points);
+                    const questType = chore.frequency === 'daily' ? 'daily-quest' : 
+                                    chore.frequency === 'weekly' ? 'weekly-quest' : 'monthly-quest';
+                    
+                    // Get themed name for this child
+                    const themedName = getThemedChoreName(chore.name, child);
+                    
+                    html += `
+                        <div class="quest-item ${questType}">
+                            <div class="quest-header">
+                                <div class="quest-name">${themedName}</div>
+                                <div class="quest-difficulty">
+                                    <span class="difficulty-star">${difficultyStars}</span>
+                                </div>
+                            </div>
+                            <div class="quest-reward">
+                                <span>Reward:</span>
+                                <span class="reward-coins">${chore.points} ⭐</span>
+                                <span>${chore.frequency} quest</span>
+                            </div>
+                            <div class="quest-actions">
+                                ${statusHtml}
+                                ${actionHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                if (assignedChores.length === 0) {
+                    html = '<p style="color: #718096; text-align: center; padding: 40px; font-style: italic;">No quests assigned yet! Ask the Quest Master to assign some adventures! 🎯</p>';
+                }
+                
+                container.innerHTML = html;
+            });
+        }
                     } else if (isCompleted) {
                         statusHtml = '<div class="quest-status status-completed">✅ Quest completed!</div>';
                         actionHtml = '';
@@ -1107,12 +1278,12 @@
                     return;
                 }
             } else {
-                challengeTypes = ['math', 'riddles', 'colors', 'memory'];
+                challengeTypes = ['spelling', 'counting', 'easy_math', 'easy_questions'];
                 challengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
                 
-                if (challengeType === 'memory') {
+                if (challengeType === 'spelling') {
                     selectedChallenge = challenges[challengeType][Math.floor(Math.random() * challenges[challengeType].length)];
-                    showMemoryGame(selectedChallenge, choreId, child, chore);
+                    showSpellingGame(selectedChallenge, choreId, child, chore);
                     return;
                 }
             }
@@ -1123,14 +1294,20 @@
                 math: '🧮',
                 riddles: '🧩', 
                 spells: '⚡',
-                colors: '🌈'
+                spelling: '✨',
+                counting: '🔢',
+                easy_math: '➕',
+                easy_questions: '🌈'
             };
             
             const challengeTitles = {
                 math: 'Mathematical Challenge',
                 riddles: 'Riddle Challenge',
                 spells: 'Spell Challenge',
-                colors: 'Color Magic Challenge'
+                spelling: 'Spelling Magic',
+                counting: 'Counting Challenge',
+                easy_math: 'Princess Math',
+                easy_questions: 'Royal Questions'
             };
             
             title.textContent = `${challengeIcons[challengeType]} ${challengeTitles[challengeType]}`;
@@ -1202,8 +1379,72 @@
             modal.style.display = 'flex';
         }
         
-        // Start memory input phase
-        function startMemoryInput() {
+        // Show spelling game for Princess
+        function showSpellingGame(challenge, choreId, child, chore) {
+            const modal = document.getElementById('miniGameModal');
+            const title = document.getElementById('miniGameTitle');
+            const content = document.getElementById('miniGameContent');
+            
+            title.textContent = '✨ Spelling Magic Challenge';
+            
+            content.innerHTML = `
+                <div class="spelling-game">
+                    <p style="font-size: 1.1em; margin-bottom: 15px;">${challenge.question}</p>
+                    <div style="font-size: 2em; padding: 20px; background: #ffecf5; border-radius: 10px; margin: 20px 0; color: #d63384; font-weight: bold; letter-spacing: 4px;">
+                        ${challenge.display}
+                    </div>
+                    <p style="margin-bottom: 10px;">Now you spell it:</p>
+                    <input type="text" class="spell-input" id="spellingInput" placeholder="Type the word..." style="text-transform: uppercase;">
+                    <br>
+                    <button class="mini-game-btn" onclick="checkSpellingChallenge('${challenge.word}', ${choreId}, '${child}')">Cast Spelling Magic!</button>
+                    <button class="mini-game-btn" onclick="skipMiniGame(${choreId}, '${child}')" style="background: #718096;">Skip Challenge</button>
+                    <div id="spelling-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            
+            setTimeout(() => {
+                const input = document.getElementById('spellingInput');
+                input.focus();
+                
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.toUpperCase();
+                });
+                
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkSpellingChallenge(challenge.word, choreId, child);
+                    }
+                });
+            }, 100);
+        }
+        
+        // Check spelling challenge
+        function checkSpellingChallenge(correctWord, choreId, child) {
+            const input = document.getElementById('spellingInput');
+            const userAnswer = input.value.trim().toUpperCase();
+            const feedback = document.getElementById('spelling-feedback');
+            
+            if (userAnswer === correctWord) {
+                feedback.style.color = '#48bb78';
+                feedback.textContent = '✨ Perfect spelling! You are a spelling princess! 👑';
+                
+                setTimeout(() => {
+                    finishQuest(choreId, child, true);
+                }, 1500);
+            } else {
+                feedback.style.color = '#e53e3e';
+                feedback.textContent = '💖 Almost there! Try again, beautiful princess!';
+                input.style.borderColor = '#e53e3e';
+                input.value = '';
+                input.focus();
+                
+                setTimeout(() => {
+                    input.style.borderColor = '#e2e8f0';
+                }, 2000);
+            }
+        }
             document.getElementById('memory-display').style.display = 'none';
             document.getElementById('memory-ready-btn').style.display = 'none';
             document.getElementById('memory-input-area').style.display = 'block';
@@ -1263,7 +1504,10 @@
                     math: '🧮 Excellent calculation!',
                     riddles: '🧩 Brilliant deduction!',
                     spells: '⚡ Spell cast perfectly!',
-                    colors: '🌈 Color magic mastered!'
+                    spelling: '✨ Perfect spelling magic!',
+                    counting: '🔢 Wonderful counting!',
+                    easy_math: '➕ Amazing princess math!',
+                    easy_questions: '🌈 Royal knowledge!'
                 };
                 
                 feedback.style.color = '#48bb78';
@@ -1422,23 +1666,37 @@
             const name = document.getElementById('newChoreName').value.trim();
             const points = parseInt(document.getElementById('newChorePoints').value);
             const frequency = document.getElementById('newChoreFreq').value;
+            const assignChild1 = document.getElementById('assignChild1').checked;
+            const assignChild2 = document.getElementById('assignChild2').checked;
             
             if (name && points) {
+                const assignedTo = [];
+                if (assignChild1) assignedTo.push('child1');
+                if (assignChild2) assignedTo.push('child2');
+                
+                if (assignedTo.length === 0) {
+                    alert('Please assign the quest to at least one child!');
+                    return;
+                }
+                
                 gameData.chores.push({
                     id: nextChoreId++,
                     name: name,
                     points: points,
-                    frequency: frequency
+                    frequency: frequency,
+                    assignedTo: assignedTo
                 });
                 
                 // Clear inputs
                 document.getElementById('newChoreName').value = '';
                 document.getElementById('newChorePoints').value = '1';
                 document.getElementById('newChoreFreq').value = 'daily';
+                document.getElementById('assignChild1').checked = true;
+                document.getElementById('assignChild2').checked = true;
                 
                 updateDisplay();
                 saveGameData();
-                showAchievement('New quest created! 📜');
+                showAchievement('New quest created and assigned! 📜');
             }
         }
         
@@ -1477,6 +1735,13 @@
             let html = '';
             
             gameData.chores.forEach(chore => {
+                const assignedNames = [];
+                if (chore.assignedTo) {
+                    if (chore.assignedTo.includes('child1')) assignedNames.push('Harry');
+                    if (chore.assignedTo.includes('child2')) assignedNames.push('Princess');
+                }
+                const assignedText = assignedNames.length > 0 ? assignedNames.join(', ') : 'Unassigned';
+                
                 html += `
                     <div class="quest-item">
                         <div class="quest-header">
@@ -1485,7 +1750,11 @@
                                 <span>${chore.points} ⭐ - ${chore.frequency}</span>
                             </div>
                         </div>
+                        <div class="quest-reward">
+                            <span>Assigned to: <strong>${assignedText}</strong></span>
+                        </div>
                         <div class="quest-actions">
+                            <button class="mini-game-btn" onclick="editChoreAssignment(${chore.id})" style="background: #4299e1; padding: 5px 10px; margin-right: 10px;">Edit Assignment</button>
                             <button class="delete-btn" onclick="deleteChore(${chore.id})">Delete Quest</button>
                         </div>
                     </div>
@@ -1493,6 +1762,70 @@
             });
             
             container.innerHTML = html;
+        }
+        
+        // Edit chore assignment
+        function editChoreAssignment(choreId) {
+            const chore = gameData.chores.find(c => c.id === choreId);
+            if (!chore) return;
+            
+            const modal = document.getElementById('miniGameModal');
+            const title = document.getElementById('miniGameTitle');
+            const content = document.getElementById('miniGameContent');
+            
+            title.textContent = '👥 Edit Quest Assignment';
+            
+            const isAssignedToChild1 = chore.assignedTo && chore.assignedTo.includes('child1');
+            const isAssignedToChild2 = chore.assignedTo && chore.assignedTo.includes('child2');
+            
+            content.innerHTML = `
+                <div class="assignment-editor">
+                    <p style="font-size: 1.1em; margin-bottom: 20px;">Quest: <strong>${chore.name}</strong></p>
+                    <p style="margin-bottom: 20px;">Choose which children should see this quest:</p>
+                    
+                    <div style="text-align: left; margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
+                            <input type="checkbox" id="editAssignChild1" ${isAssignedToChild1 ? 'checked' : ''}> 
+                            ⚡ Harry (Wizard Theme)
+                        </label>
+                        <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
+                            <input type="checkbox" id="editAssignChild2" ${isAssignedToChild2 ? 'checked' : ''}> 
+                            🦄 Princess (Royal Theme)
+                        </label>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 15px; background: #f0f8ff; border-radius: 10px; font-size: 0.9em;">
+                        <strong>Preview:</strong><br>
+                        <div style="margin-top: 10px;">
+                            <strong>Harry sees:</strong> "${getThemedChoreName(chore.name, 'child1')}"<br>
+                            <strong>Princess sees:</strong> "${getThemedChoreName(chore.name, 'child2')}"
+                        </div>
+                    </div>
+                    
+                    <button class="mini-game-btn" onclick="saveChoreAssignment(${choreId})">Save Assignment</button>
+                    <button class="mini-game-btn" onclick="closeMiniGame()" style="background: #718096;">Cancel</button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Save chore assignment
+        function saveChoreAssignment(choreId) {
+            const chore = gameData.chores.find(c => c.id === choreId);
+            if (!chore) return;
+            
+            const assignChild1 = document.getElementById('editAssignChild1').checked;
+            const assignChild2 = document.getElementById('editAssignChild2').checked;
+            
+            chore.assignedTo = [];
+            if (assignChild1) chore.assignedTo.push('child1');
+            if (assignChild2) chore.assignedTo.push('child2');
+            
+            closeMiniGame();
+            updateDisplay();
+            saveGameData();
+            showAchievement('Quest assignment updated! 👥');
         }
         
         // Update pending approvals
