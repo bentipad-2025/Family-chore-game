@@ -445,8 +445,13 @@
             color: #4a5568;
         }
         
-        .challenge-game, .memory-game {
+        .pin-prompt {
             margin: 20px 0;
+            text-align: center;
+        }
+        
+        .pin-prompt input {
+            margin-bottom: 20px;
         }
         
         .challenge-question {
@@ -747,6 +752,8 @@
         
         let currentMode = 'parent';
         let nextChoreId = 6;
+        let parentAuthenticated = false;
+        const PARENT_PIN = "1234"; // Change this to your preferred PIN
         
         // Mini-game challenges for different themes
         const miniGameChallenges = {
@@ -817,7 +824,8 @@
         // Initialize game
         function initGame() {
             createParticles();
-            switchMode('parent');
+            // Start with Harry's mode instead of parent mode
+            switchModeWithoutAuth('child1');
             updateDisplay();
             
             // Auto-save every 30 seconds
@@ -857,11 +865,107 @@
         
         // Switch between modes
         function switchMode(mode) {
+            // Check if trying to access parent mode
+            if (mode === 'parent' && !parentAuthenticated) {
+                showPINPrompt();
+                return;
+            }
+            
             currentMode = mode;
             
             // Update button states
             document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector(`.${mode}-mode`).classList.add('active');
+            
+            // Show appropriate section
+            document.querySelectorAll('.player-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(`${mode}-section`).classList.add('active');
+            
+            updateDisplay();
+        }
+        
+        // Show PIN prompt for parent access
+        function showPINPrompt() {
+            const modal = document.getElementById('miniGameModal');
+            const title = document.getElementById('miniGameTitle');
+            const content = document.getElementById('miniGameContent');
+            
+            title.textContent = '🔒 Quest Master Access';
+            
+            content.innerHTML = `
+                <div class="pin-prompt">
+                    <p style="font-size: 1.1em; margin-bottom: 20px;">Enter the Quest Master PIN to access parent controls:</p>
+                    <input type="password" class="spell-input" id="pinInput" placeholder="Enter PIN..." maxlength="10" style="text-align: center; font-size: 1.5em; letter-spacing: 3px;">
+                    <br>
+                    <button class="mini-game-btn" onclick="checkPIN()">Enter Quest Master Mode</button>
+                    <button class="mini-game-btn" onclick="cancelPIN()" style="background: #718096;">Cancel</button>
+                    <div id="pin-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            
+            // Focus on input
+            setTimeout(() => {
+                const input = document.getElementById('pinInput');
+                input.focus();
+                
+                // Allow Enter key to submit
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPIN();
+                    }
+                });
+            }, 100);
+        }
+        
+        // Check PIN
+        function checkPIN() {
+            const input = document.getElementById('pinInput');
+            const enteredPIN = input.value.trim();
+            const feedback = document.getElementById('pin-feedback');
+            
+            if (enteredPIN === PARENT_PIN) {
+                parentAuthenticated = true;
+                feedback.style.color = '#48bb78';
+                feedback.textContent = '✅ Access granted!';
+                
+                setTimeout(() => {
+                    closeMiniGame();
+                    switchMode('parent');
+                }, 1000);
+            } else {
+                feedback.style.color = '#e53e3e';
+                feedback.textContent = '❌ Incorrect PIN. Try again.';
+                input.style.borderColor = '#e53e3e';
+                input.value = '';
+                input.focus();
+                
+                // Reset border color after 2 seconds
+                setTimeout(() => {
+                    input.style.borderColor = '#e2e8f0';
+                }, 2000);
+            }
+        }
+        
+        // Cancel PIN prompt
+        function cancelPIN() {
+            closeMiniGame();
+            // Reset to a child mode if no mode is active
+            if (currentMode === 'parent') {
+                switchModeWithoutAuth('child1');
+            }
+        }
+        
+        // Switch mode without authentication (for internal use)
+        function switchModeWithoutAuth(mode) {
+            currentMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            if (document.querySelector(`.${mode}-mode`)) {
+                document.querySelector(`.${mode}-mode`).classList.add('active');
+            }
             
             // Show appropriate section
             document.querySelectorAll('.player-section').forEach(section => section.classList.remove('active'));
