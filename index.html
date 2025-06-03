@@ -5,391 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Chore Adventure</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 10px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .title {
-            font-size: 2.5em;
-            color: #4a5568;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 10px;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 10px rgba(255,215,0,0.3); }
-            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 20px rgba(255,215,0,0.6); }
-        }
-        
-        .subtitle {
-            font-size: 1.2em;
-            color: #718096;
-        }
-        
-        .game-modes {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .mode-btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .mode-btn.active {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 10px; }
+        .container { max-width: 1200px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .title { font-size: 2.5em; color: #4a5568; margin-bottom: 10px; animation: glow 2s ease-in-out infinite alternate; }
+        @keyframes glow { from { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 10px rgba(255,215,0,0.3); } to { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 20px rgba(255,215,0,0.6); } }
+        .subtitle { font-size: 1.2em; color: #718096; }
+        .game-modes { display: flex; gap: 20px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap; }
+        .mode-btn { padding: 15px 30px; border: none; border-radius: 15px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .mode-btn.active { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
         .parent-mode { background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; }
         .child1-mode { background: linear-gradient(45deg, #1e3c72, #2a5298); color: white; }
         .child2-mode { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #333; }
-        
-        .player-section {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-        
-        .player-section.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .adventure-map {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            position: relative;
-            text-align: center;
-            color: white;
-        }
-        
-        .character-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4em;
-            background: rgba(255,255,255,0.2);
-            border: 3px solid rgba(255,255,255,0.3);
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .progress-bar-container {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        
-        .progress-bar {
-            background: rgba(255,255,255,0.3);
-            height: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-        
-        .quest-board {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .quest-title {
-            font-size: 1.8em;
-            color: #4a5568;
-            margin-bottom: 20px;
-        }
-        
-        .quest-item {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 5px solid;
-            transition: all 0.3s ease;
-        }
-        
-        .quest-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        
+        .player-section { display: none; animation: fadeIn 0.5s ease-in; }
+        .player-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .adventure-map { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 30px; margin-bottom: 30px; text-align: center; color: white; position: relative; overflow: hidden; }
+        .character-avatar { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 4em; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.3); animation: bounce 2s ease-in-out infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .progress-bar-container { background: rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; margin: 20px 0; backdrop-filter: blur(10px); }
+        .progress-bar { background: rgba(255,255,255,0.3); height: 20px; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffed4e); border-radius: 10px; transition: width 0.5s ease; position: relative; }
+        .quest-board { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+        .quest-title { font-size: 1.8em; color: #4a5568; margin-bottom: 20px; }
+        .quest-item { background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 15px; padding: 20px; margin-bottom: 15px; border-left: 5px solid; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .quest-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
         .daily-quest { border-left-color: #48bb78; }
         .weekly-quest { border-left-color: #ed8936; }
         .monthly-quest { border-left-color: #9f7aea; }
-        
-        .quest-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .quest-name {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #2d3748;
-        }
-        
-        .quest-reward {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            color: #4a5568;
-        }
-        
-        .reward-coins {
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
-            color: #333;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        
-        .quest-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        
-        .action-btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .start-quest {
-            background: linear-gradient(45deg, #4299e1, #3182ce);
-            color: white;
-        }
-        
-        .complete-quest {
-            background: linear-gradient(45deg, #48bb78, #38a169);
-            color: white;
-        }
-        
-        .quest-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-        }
-        
-        .status-pending {
-            color: #ed8936;
-            animation: pulse 2s infinite;
-        }
-        
-        .status-completed {
-            color: #48bb78;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .admin-section {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .admin-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #4a5568;
-        }
-        
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .input-group input, .input-group select {
-            padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-        
-        .add-btn {
-            background: #4299e1;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .delete-btn {
-            background: #e53e3e;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8em;
-        }
-        
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .modal-title {
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #4a5568;
-        }
-        
-        .modal-input {
-            padding: 15px;
-            font-size: 1.2em;
-            border: 3px solid #e2e8f0;
-            border-radius: 10px;
-            text-align: center;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        
-        .modal-btn {
-            background: linear-gradient(45deg, #4299e1, #3182ce);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px;
-        }
-        
-        .celebration-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            z-index: 1001;
-            display: none;
-        }
-        
-        .celebration-popup.show {
-            display: block;
-            animation: celebrationBounce 0.6s ease-out;
-        }
-        
-        @keyframes celebrationBounce {
-            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-        
-        .achievement-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #48bb78, #38a169);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1002;
-        }
-        
-        .achievement-notification.show {
-            transform: translateX(0);
-        }
+        .quest-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .quest-name { font-size: 1.2em; font-weight: bold; color: #2d3748; }
+        .quest-difficulty { color: #ffd700; font-size: 1.2em; }
+        .quest-reward { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #4a5568; }
+        .reward-coins { background: linear-gradient(45deg, #ffd700, #ffed4e); color: #333; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .quest-actions { display: flex; gap: 10px; align-items: center; }
+        .action-btn { padding: 12px 24px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .start-quest { background: linear-gradient(45deg, #4299e1, #3182ce); color: white; }
+        .complete-quest { background: linear-gradient(45deg, #48bb78, #38a169); color: white; }
+        .quest-status { display: flex; align-items: center; gap: 10px; font-weight: bold; }
+        .status-pending { color: #ed8936; animation: pulse 2s infinite; }
+        .status-completed { color: #48bb78; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .admin-section { background: #f7fafc; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+        .admin-title { font-size: 1.3em; font-weight: bold; margin-bottom: 15px; color: #4a5568; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .input-group input, .input-group select { padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; }
+        .add-btn { background: #4299e1; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .delete-btn { background: #e53e3e; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.8em; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 90%; text-align: center; position: relative; }
+        .modal-title { font-size: 2em; margin-bottom: 20px; color: #4a5568; }
+        .modal-input { padding: 15px; font-size: 1.2em; border: 3px solid #e2e8f0; border-radius: 10px; text-align: center; width: 100%; margin-bottom: 20px; }
+        .modal-btn { background: linear-gradient(45deg, #4299e1, #3182ce); color: white; padding: 15px 30px; border: none; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin: 10px; transition: all 0.3s ease; }
+        .celebration-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); z-index: 1001; display: none; }
+        .celebration-popup.show { display: block; animation: celebrationBounce 0.6s ease-out; }
+        @keyframes celebrationBounce { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.1); } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+        .achievement-notification { position: fixed; top: 20px; right: 20px; background: linear-gradient(45deg, #48bb78, #38a169); color: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transform: translateX(400px); transition: transform 0.3s ease; z-index: 1002; }
+        .achievement-notification.show { transform: translateX(0); }
     </style>
 </head>
 <body>
@@ -438,7 +111,7 @@
                 </div>
                 <button class="add-btn" onclick="addChore()">Create Quest</button>
                 <div style="margin-top: 10px; font-size: 0.9em; color: #666; font-style: italic;">
-                    💡 Tip: The game will automatically theme your chore names!
+                    💡 Tip: Chores reset daily/weekly/monthly with new challenges!
                 </div>
             </div>
             
@@ -508,7 +181,7 @@
         </div>
     </div>
     
-    <!-- Celebration Popup -->
+    <!-- Celebration -->
     <div class="celebration-popup" id="celebrationPopup">
         <h2>🎉 QUEST COMPLETED! 🎉</h2>
         <p id="celebrationText"></p>
@@ -516,69 +189,46 @@
         <button class="modal-btn" onclick="closeCelebration()">Awesome!</button>
     </div>
     
-    <!-- Achievement Notification -->
+    <!-- Notification -->
     <div class="achievement-notification" id="achievementNotification">
         <div id="achievementText"></div>
     </div>
     
     <script>
-        // Game configuration
-        const PARENT_PIN = "1234";
+        var PARENT_PIN = "1234";
+        var currentMode = 'child1';
+        var nextChoreId = 6;
+        var parentAuthenticated = false;
         
-        // Game state
-        let gameData = {
+        var gameData = {
             starsTarget: 10,
             chores: [
-                { id: 1, name: "Make bed", points: 2, frequency: "daily", assignedTo: ["child1", "child2"] },
-                { id: 2, name: "Put away toys", points: 1, frequency: "daily", assignedTo: ["child1", "child2"] },
-                { id: 3, name: "Clean room", points: 3, frequency: "weekly", assignedTo: ["child1", "child2"] },
-                { id: 4, name: "Put away clothes", points: 2, frequency: "daily", assignedTo: ["child1", "child2"] },
-                { id: 5, name: "Organise shoe cupboard", points: 4, frequency: "monthly", assignedTo: ["child1", "child2"] }
+                {id: 1, name: "Make bed", points: 2, frequency: "daily", assignedTo: ["child1", "child2"]},
+                {id: 2, name: "Put away toys", points: 1, frequency: "daily", assignedTo: ["child1", "child2"]},
+                {id: 3, name: "Clean room", points: 3, frequency: "weekly", assignedTo: ["child1", "child2"]},
+                {id: 4, name: "Put away clothes", points: 2, frequency: "daily", assignedTo: ["child1", "child2"]},
+                {id: 5, name: "Organise shoe cupboard", points: 4, frequency: "monthly", assignedTo: ["child1", "child2"]}
             ],
             players: {
-                child1: { 
-                    name: "Harry", 
-                    stars: 0, 
-                    level: 1, 
-                    completedChores: [], 
-                    pendingChores: [],
-                    activeQuests: []
-                },
-                child2: { 
-                    name: "Princess", 
-                    stars: 0, 
-                    level: 1, 
-                    completedChores: [], 
-                    pendingChores: [],
-                    activeQuests: []
-                }
-            }
+                child1: {name: "Harry", stars: 0, level: 1, completedChores: [], pendingChores: [], activeQuests: [], lastResetDate: null},
+                child2: {name: "Princess", stars: 0, level: 1, completedChores: [], pendingChores: [], activeQuests: [], lastResetDate: null}
+            },
+            lastResetCheck: null
         };
         
-        let currentMode = 'child1';
-        let nextChoreId = 6;
-        let parentAuthenticated = false;
-        
-        // Theme conversion
-        const choreThemes = {
+        var choreThemes = {
             child1: {
                 keywords: {
                     'bed': 'magical dormitory bed',
                     'toys': 'magical artifacts',
                     'room': 'Hogwarts dormitory',
                     'clothes': 'wizard robes',
-                    'shoes': 'magical footwear',
-                    'drawers': 'magical storage chambers',
-                    'kitchen': 'potions laboratory',
-                    'dishes': 'cauldrons and magical vessels',
-                    'bathroom': 'magical washroom'
+                    'drawers': 'magical storage chambers'
                 },
                 verbs: {
                     'make': 'enchant',
                     'clean': 'purify',
-                    'organize': 'arrange magically',
-                    'put away': 'store in magical order',
-                    'tidy': 'cast tidying charms on'
+                    'organize': 'arrange magically'
                 }
             },
             child2: {
@@ -587,70 +237,114 @@
                     'toys': 'royal treasures',
                     'room': 'princess chambers',
                     'clothes': 'royal gowns',
-                    'shoes': 'royal shoe collection',
-                    'drawers': 'royal treasure drawers',
-                    'kitchen': 'royal kitchen',
-                    'dishes': 'royal china and crystal',
-                    'bathroom': 'royal powder room'
+                    'drawers': 'royal treasure drawers'
                 },
                 verbs: {
                     'make': 'prepare royally',
                     'clean': 'beautify',
-                    'organize': 'arrange elegantly',
-                    'put away': 'store in royal order',
-                    'tidy': 'make palace-perfect'
+                    'organize': 'arrange elegantly'
                 }
             }
         };
         
-        // Mini-game challenges
-        const challenges = {
+        var challenges = {
             child1: {
                 math: [
-                    { question: "If you have 7 chocolate frogs and eat 3, then buy 5 more, how many do you have?", answer: "9" },
-                    { question: "Hogwarts has 4 houses with 15 students each. How many students total?", answer: "60" },
-                    { question: "A Quidditch match lasts 3 hours. How many minutes is that?", answer: "180" }
+                    {question: "If you have 7 chocolate frogs and eat 3, then buy 5 more, how many do you have?", answer: "9"},
+                    {question: "Hogwarts has 4 houses with 15 students each. How many students total?", answer: "60"},
+                    {question: "A Quidditch match lasts 3 hours. How many minutes is that?", answer: "180"},
+                    {question: "If a spell requires 12 ingredients and you have 8, how many more do you need?", answer: "4"},
+                    {question: "Ron has 25 wizard cards. He gives 7 to Harry and 6 to Hermione. How many does he have left?", answer: "12"}
                 ],
                 riddles: [
-                    { question: "I fly without wings, I see without eyes. I'm used in Quidditch, what am I?", answer: "SNITCH" },
-                    { question: "Three heads I have, but one body. Fluffy am I, what creature could I be?", answer: "CERBERUS" }
+                    {question: "I fly without wings, I see without eyes. I'm used in Quidditch, what am I?", answer: "SNITCH"},
+                    {question: "Three heads I have, but one body. Fluffy am I, what creature could I be?", answer: "CERBERUS"},
+                    {question: "I change my form but keep my mind, leaving my body far behind. What am I?", answer: "ANIMAGUS"},
+                    {question: "I sort you into houses four, based on traits at your core. What am I?", answer: "HAT"},
+                    {question: "I'm long and thin, made of wood. For casting spells, I'm very good. What am I?", answer: "WAND"}
                 ]
             },
             child2: {
                 spelling: [
-                    { question: "Spell this magical word:", word: "LOVE", display: "L-O-V-E" },
-                    { question: "Spell this royal word:", word: "ROSE", display: "R-O-S-E" },
-                    { question: "Spell this pretty word:", word: "STAR", display: "S-T-A-R" }
+                    {question: "Spell this magical word:", word: "LOVE", display: "L-O-V-E"},
+                    {question: "Spell this royal word:", word: "ROSE", display: "R-O-S-E"},
+                    {question: "Spell this pretty word:", word: "STAR", display: "S-T-A-R"},
+                    {question: "Spell this sweet word:", word: "CAKE", display: "C-A-K-E"},
+                    {question: "Spell this magical word:", word: "MOON", display: "M-O-O-N"}
                 ],
                 counting: [
-                    { question: "Count the hearts: ❤️❤️❤️", answer: "3" },
-                    { question: "Count the stars: ⭐⭐⭐⭐⭐", answer: "5" },
-                    { question: "Count the flowers: 🌸🌸🌸🌸", answer: "4" }
+                    {question: "Count the hearts: ❤️❤️❤️", answer: "3"},
+                    {question: "Count the stars: ⭐⭐⭐⭐⭐", answer: "5"},
+                    {question: "Count the flowers: 🌸🌸🌸🌸", answer: "4"},
+                    {question: "Count the unicorns: 🦄🦄", answer: "2"},
+                    {question: "Count the crowns: 👑👑👑👑👑👑", answer: "6"}
                 ]
             }
         };
         
-        // Theme conversion function
         function getThemedChoreName(originalName, childId) {
             if (!choreThemes[childId]) return originalName;
+            var themedName = originalName.toLowerCase();
+            var theme = choreThemes[childId];
             
-            let themedName = originalName.toLowerCase();
-            const theme = choreThemes[childId];
-            
-            Object.keys(theme.keywords).forEach(keyword => {
-                const regex = new RegExp(keyword, 'gi');
+            for (var keyword in theme.keywords) {
+                var regex = new RegExp(keyword, 'gi');
                 themedName = themedName.replace(regex, theme.keywords[keyword]);
-            });
+            }
             
-            Object.keys(theme.verbs).forEach(verb => {
-                const regex = new RegExp(`\\b${verb}\\b`, 'gi');
+            for (var verb in theme.verbs) {
+                var regex = new RegExp('\\b' + verb + '\\b', 'gi');
                 themedName = themedName.replace(regex, theme.verbs[verb]);
-            });
+            }
             
             return themedName.charAt(0).toUpperCase() + themedName.slice(1);
         }
         
-        // Mode switching
+        function checkAndResetChores() {
+            var now = new Date();
+            var today = now.toDateString();
+            
+            if (gameData.lastResetCheck !== today) {
+                gameData.lastResetCheck = today;
+                
+                for (var child in gameData.players) {
+                    var player = gameData.players[child];
+                    var lastReset = player.lastResetDate ? new Date(player.lastResetDate) : new Date(0);
+                    
+                    if (lastReset.toDateString() !== today) {
+                        resetChoresForPlayer(child, 'daily');
+                        player.lastResetDate = today;
+                    }
+                }
+                
+                updateDisplay();
+                saveGameData();
+            }
+        }
+        
+        function resetChoresForPlayer(child, frequency) {
+            var player = gameData.players[child];
+            var choresToReset = [];
+            
+            for (var i = 0; i < gameData.chores.length; i++) {
+                var chore = gameData.chores[i];
+                if (chore.frequency === frequency && chore.assignedTo && chore.assignedTo.indexOf(child) !== -1) {
+                    choresToReset.push(chore);
+                }
+            }
+            
+            for (var j = 0; j < choresToReset.length; j++) {
+                var choreId = choresToReset[j].id;
+                player.completedChores = player.completedChores.filter(function(id) { return id !== choreId; });
+                player.pendingChores = player.pendingChores.filter(function(id) { return id !== choreId; });
+                player.activeQuests = player.activeQuests.filter(function(id) { return id !== choreId; });
+            }
+            
+            if (choresToReset.length > 0) {
+                showAchievement('Daily quests have reset for ' + player.name + '! 🔄');
+            }
+        }
+        
         function switchMode(mode) {
             if (mode === 'parent' && !parentAuthenticated) {
                 showPINPrompt();
@@ -658,42 +352,45 @@
             }
             
             currentMode = mode;
-            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.${mode}-mode`).classList.add('active');
-            document.querySelectorAll('.player-section').forEach(section => section.classList.remove('active'));
-            document.getElementById(`${mode}-section`).classList.add('active');
+            
+            var buttons = document.querySelectorAll('.mode-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            document.querySelector('.' + mode + '-mode').classList.add('active');
+            
+            var sections = document.querySelectorAll('.player-section');
+            for (var j = 0; j < sections.length; j++) {
+                sections[j].classList.remove('active');
+            }
+            document.getElementById(mode + '-section').classList.add('active');
+            
             updateDisplay();
         }
         
-        // PIN authentication
         function showPINPrompt() {
-            const modal = document.getElementById('gameModal');
-            const title = document.getElementById('modalTitle');
-            const content = document.getElementById('modalContent');
+            var modal = document.getElementById('gameModal');
+            var title = document.getElementById('modalTitle');
+            var content = document.getElementById('modalContent');
             
             title.textContent = '🔒 Quest Master Access';
-            content.innerHTML = `
-                <p style="margin-bottom: 20px;">Enter the Quest Master PIN:</p>
-                <input type="password" class="modal-input" id="pinInput" placeholder="Enter PIN..." maxlength="10">
-                <br>
-                <button class="modal-btn" onclick="checkPIN()">Enter</button>
-                <button class="modal-btn" onclick="closeModal()" style="background: #718096;">Cancel</button>
-                <div id="pin-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-            `;
+            content.innerHTML = '<p style="margin-bottom: 20px;">Enter the Quest Master PIN:</p><input type="password" class="modal-input" id="pinInput" placeholder="Enter PIN..." maxlength="10"><br><button class="modal-btn" onclick="checkPIN()">Enter</button><button class="modal-btn" onclick="closeModal()" style="background: #718096;">Cancel</button><div id="pin-feedback" style="margin-top: 15px; font-weight: bold;"></div>';
             
             modal.style.display = 'flex';
-            setTimeout(() => document.getElementById('pinInput').focus(), 100);
+            setTimeout(function() {
+                document.getElementById('pinInput').focus();
+            }, 100);
         }
         
         function checkPIN() {
-            const input = document.getElementById('pinInput');
-            const feedback = document.getElementById('pin-feedback');
+            var input = document.getElementById('pinInput');
+            var feedback = document.getElementById('pin-feedback');
             
             if (input.value.trim() === PARENT_PIN) {
                 parentAuthenticated = true;
                 feedback.style.color = '#48bb78';
                 feedback.textContent = '✅ Access granted!';
-                setTimeout(() => {
+                setTimeout(function() {
                     closeModal();
                     switchMode('parent');
                 }, 1000);
@@ -705,8 +402,8 @@
             }
         }
         
-        // Display updates
         function updateDisplay() {
+            checkAndResetChores();
             updatePlayerProgress();
             updateQuestDisplay();
             updateAdminDisplay();
@@ -714,42 +411,48 @@
         }
         
         function updatePlayerProgress() {
-            ['child1', 'child2'].forEach(child => {
-                const player = gameData.players[child];
-                const progressFill = document.getElementById(`${child}-progress-fill`);
-                const starsDisplay = document.getElementById(`${child}-stars-display`);
-                const targetDisplay = document.getElementById(`${child}-target-display`);
-                const levelDisplay = document.getElementById(`${child}-level`);
+            for (var child in gameData.players) {
+                var player = gameData.players[child];
+                var progressFill = document.getElementById(child + '-progress-fill');
+                var starsDisplay = document.getElementById(child + '-stars-display');
+                var targetDisplay = document.getElementById(child + '-target-display');
+                var levelDisplay = document.getElementById(child + '-level');
                 
                 if (progressFill) {
-                    const progressPercent = (player.stars / gameData.starsTarget) * 100;
+                    var progressPercent = (player.stars / gameData.starsTarget) * 100;
                     progressFill.style.width = Math.min(progressPercent, 100) + '%';
                 }
                 
                 if (starsDisplay) starsDisplay.textContent = player.stars;
                 if (targetDisplay) targetDisplay.textContent = gameData.starsTarget;
                 if (levelDisplay) levelDisplay.textContent = player.level;
-            });
+            }
         }
         
         function updateQuestDisplay() {
-            ['child1', 'child2'].forEach(child => {
-                const container = document.getElementById(`${child}-quests`);
-                if (!container) return;
+            for (var child in gameData.players) {
+                var container = document.getElementById(child + '-quests');
+                if (!container) continue;
                 
-                const player = gameData.players[child];
-                const assignedChores = gameData.chores.filter(chore => 
-                    chore.assignedTo && chore.assignedTo.includes(child)
-                );
+                var player = gameData.players[child];
+                var assignedChores = [];
                 
-                let html = '';
-                assignedChores.forEach(chore => {
-                    const isActive = player.activeQuests.includes(chore.id);
-                    const isPending = player.pendingChores.includes(chore.id);
-                    const isCompleted = player.completedChores.includes(chore.id);
+                for (var i = 0; i < gameData.chores.length; i++) {
+                    var chore = gameData.chores[i];
+                    if (chore.assignedTo && chore.assignedTo.indexOf(child) !== -1) {
+                        assignedChores.push(chore);
+                    }
+                }
+                
+                var html = '';
+                for (var j = 0; j < assignedChores.length; j++) {
+                    var chore = assignedChores[j];
+                    var isActive = player.activeQuests.indexOf(chore.id) !== -1;
+                    var isPending = player.pendingChores.indexOf(chore.id) !== -1;
+                    var isCompleted = player.completedChores.indexOf(chore.id) !== -1;
                     
-                    let statusHtml = '';
-                    let actionHtml = '';
+                    var statusHtml = '';
+                    var actionHtml = '';
                     
                     if (isPending) {
                         statusHtml = '<div class="quest-status status-pending">🕐 Awaiting approval</div>';
@@ -759,449 +462,8 @@
                         actionHtml = '';
                     } else if (isActive) {
                         statusHtml = '<div class="quest-status">🎯 In progress</div>';
-                        actionHtml = `<button class="action-btn complete-quest" onclick="completeQuest(${chore.id}, '${child}')">Complete Quest!</button>`;
+                        actionHtml = '<button class="action-btn complete-quest" onclick="completeQuest(' + chore.id + ', \'' + child + '\')">Complete Quest!</button>';
                     } else {
                         statusHtml = '<div class="quest-status">📜 Available</div>';
-                        actionHtml = `<button class="action-btn start-quest" onclick="startQuest(${chore.id}, '${child}')">Start Quest</button>`;
+                        actionHtml = '<button class="action-btn start-quest" onclick="startQuest(' + chore.id + ', \'' + child + '\')">Start Quest</button>';
                     }
-                    
-                    const questType = chore.frequency === 'daily' ? 'daily-quest' : 
-                                    chore.frequency === 'weekly' ? 'weekly-quest' : 'monthly-quest';
-                    const themedName = getThemedChoreName(chore.name, child);
-                    
-                    html += `
-                        <div class="quest-item ${questType}">
-                            <div class="quest-header">
-                                <div class="quest-name">${themedName}</div>
-                                <div>${'★'.repeat(chore.points)}${'☆'.repeat(5 - chore.points)}</div>
-                            </div>
-                            <div class="quest-reward">
-                                <span>Reward:</span>
-                                <span class="reward-coins">${chore.points} ⭐</span>
-                                <span>${chore.frequency} quest</span>
-                            </div>
-                            <div class="quest-actions">
-                                ${statusHtml}
-                                ${actionHtml}
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                if (assignedChores.length === 0) {
-                    html = '<p style="color: #718096; text-align: center; padding: 40px; font-style: italic;">No quests assigned yet! Ask the Quest Master to assign some adventures! 🎯</p>';
-                }
-                
-                container.innerHTML = html;
-            });
-        }
-        
-        function updateAdminDisplay() {
-            const container = document.getElementById('admin-chores');
-            if (!container) return;
-            
-            let html = '';
-            gameData.chores.forEach(chore => {
-                const assignedNames = [];
-                if (chore.assignedTo) {
-                    if (chore.assignedTo.includes('child1')) assignedNames.push('Harry');
-                    if (chore.assignedTo.includes('child2')) assignedNames.push('Princess');
-                }
-                const assignedText = assignedNames.length > 0 ? assignedNames.join(', ') : 'Unassigned';
-                
-                html += `
-                    <div class="quest-item">
-                        <div class="quest-header">
-                            <div class="quest-name">${chore.name}</div>
-                            <div>${chore.points} ⭐ - ${chore.frequency}</div>
-                        </div>
-                        <div class="quest-reward">
-                            <span>Assigned to: <strong>${assignedText}</strong></span>
-                        </div>
-                        <div class="quest-actions">
-                            <button class="add-btn" onclick="editAssignment(${chore.id})" style="padding: 5px 10px; margin-right: 10px;">Edit</button>
-                            <button class="delete-btn" onclick="deleteChore(${chore.id})">Delete</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        function updatePendingApprovals() {
-            const container = document.getElementById('pending-approvals');
-            if (!container) return;
-            
-            let html = '';
-            ['child1', 'child2'].forEach(child => {
-                const player = gameData.players[child];
-                player.pendingChores.forEach(choreId => {
-                    const chore = gameData.chores.find(c => c.id === choreId);
-                    if (chore) {
-                        html += `
-                            <div class="quest-item">
-                                <div class="quest-header">
-                                    <div class="quest-name">${player.name}: ${chore.name}</div>
-                                    <div>${chore.points} ⭐</div>
-                                </div>
-                                <div class="quest-actions">
-                                    <button class="action-btn complete-quest" onclick="approveChore(${choreId}, '${child}')">Approve</button>
-                                    <button class="action-btn" onclick="rejectChore(${choreId}, '${child}')" style="background: #e53e3e;">Reject</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-            });
-            
-            if (html === '') {
-                html = '<p style="color: #718096; text-align: center; padding: 20px; font-style: italic;">No quests awaiting approval</p>';
-            }
-            
-            container.innerHTML = html;
-        }
-        
-        // Quest actions
-        function startQuest(choreId, child) {
-            const player = gameData.players[child];
-            if (!player.activeQuests.includes(choreId)) {
-                player.activeQuests.push(choreId);
-                showAchievement('Quest started! Time to begin your adventure! 🎯');
-                updateDisplay();
-            }
-        }
-        
-        function completeQuest(choreId, child) {
-            const chore = gameData.chores.find(c => c.id === choreId);
-            if (!chore) return;
-            
-            showMiniGame(choreId, child, chore);
-        }
-        
-        function showMiniGame(choreId, child, chore) {
-            const modal = document.getElementById('gameModal');
-            const title = document.getElementById('modalTitle');
-            const content = document.getElementById('modalContent');
-            
-            const childChallenges = challenges[child];
-            if (!childChallenges) {
-                finishQuest(choreId, child, false);
-                return;
-            }
-            
-            let challengeType, selectedChallenge;
-            
-            if (child === 'child1') {
-                challengeType = Math.random() < 0.5 ? 'math' : 'riddles';
-                selectedChallenge = childChallenges[challengeType][Math.floor(Math.random() * childChallenges[challengeType].length)];
-                
-                title.textContent = challengeType === 'math' ? '🧮 Mathematical Challenge' : '🧩 Riddle Challenge';
-                
-                content.innerHTML = `
-                    <p style="font-size: 1.1em; margin-bottom: 15px;">${selectedChallenge.question}</p>
-                    <input type="text" class="modal-input" id="challengeInput" placeholder="Your answer..." style="text-transform: uppercase;">
-                    <br>
-                    <button class="modal-btn" onclick="checkAnswer('${selectedChallenge.answer.toUpperCase()}', ${choreId}, '${child}')">Submit Answer!</button>
-                    <button class="modal-btn" onclick="skipChallenge(${choreId}, '${child}')" style="background: #718096;">Skip</button>
-                    <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-                `;
-            } else {
-                challengeType = Math.random() < 0.5 ? 'spelling' : 'counting';
-                selectedChallenge = childChallenges[challengeType][Math.floor(Math.random() * childChallenges[challengeType].length)];
-                
-                if (challengeType === 'spelling') {
-                    title.textContent = '✨ Spelling Magic Challenge';
-                    content.innerHTML = `
-                        <p style="font-size: 1.1em; margin-bottom: 15px;">${selectedChallenge.question}</p>
-                        <div style="font-size: 2em; padding: 20px; background: #ffecf5; border-radius: 10px; margin: 20px 0; color: #d63384; font-weight: bold; letter-spacing: 4px;">
-                            ${selectedChallenge.display}
-                        </div>
-                        <p style="margin-bottom: 10px;">Now you spell it:</p>
-                        <input type="text" class="modal-input" id="challengeInput" placeholder="Type the word..." style="text-transform: uppercase;">
-                        <br>
-                        <button class="modal-btn" onclick="checkAnswer('${selectedChallenge.word}', ${choreId}, '${child}')">Cast Spelling Magic!</button>
-                        <button class="modal-btn" onclick="skipChallenge(${choreId}, '${child}')" style="background: #718096;">Skip</button>
-                        <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-                    `;
-                } else {
-                    title.textContent = '🔢 Counting Challenge';
-                    content.innerHTML = `
-                        <p style="font-size: 1.1em; margin-bottom: 15px;">${selectedChallenge.question}</p>
-                        <input type="text" class="modal-input" id="challengeInput" placeholder="Your answer...">
-                        <br>
-                        <button class="modal-btn" onclick="checkAnswer('${selectedChallenge.answer}', ${choreId}, '${child}')">Submit Answer!</button>
-                        <button class="modal-btn" onclick="skipChallenge(${choreId}, '${child}')" style="background: #718096;">Skip</button>
-                        <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-                    `;
-                }
-            }
-            
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                const input = document.getElementById('challengeInput');
-                input.focus();
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        checkAnswer(selectedChallenge.answer || selectedChallenge.word, choreId, child);
-                    }
-                });
-            }, 100);
-        }
-        
-        function checkAnswer(correctAnswer, choreId, child) {
-            const input = document.getElementById('challengeInput');
-            const userAnswer = input.value.trim().toUpperCase();
-            const feedback = document.getElementById('challenge-feedback');
-            
-            if (userAnswer === correctAnswer.toUpperCase()) {
-                feedback.style.color = '#48bb78';
-                feedback.textContent = child === 'child1' ? '🎉 Excellent work!' : '✨ Perfect! You are amazing! 👑';
-                
-                setTimeout(() => {
-                    finishQuest(choreId, child, true);
-                }, 1500);
-            } else {
-                feedback.style.color = '#e53e3e';
-                feedback.textContent = child === 'child1' ? '❌ Not quite right. Try again!' : '💖 Almost there! Try again, beautiful princess!';
-                input.value = '';
-                input.focus();
-            }
-        }
-        
-        function skipChallenge(choreId, child) {
-            finishQuest(choreId, child, false);
-        }
-        
-        function finishQuest(choreId, child, success) {
-            const player = gameData.players[child];
-            
-            player.activeQuests = player.activeQuests.filter(id => id !== choreId);
-            if (!player.pendingChores.includes(choreId)) {
-                player.pendingChores.push(choreId);
-            }
-            
-            closeModal();
-            
-            const bonusText = success ? " You solved the challenge perfectly! 🌟" : "";
-            showAchievement(`Quest submitted for approval!${bonusText}`);
-            
-            updateDisplay();
-        }
-        
-        // Parent functions
-        function approveChore(choreId, child) {
-            const player = gameData.players[child];
-            const chore = gameData.chores.find(c => c.id === choreId);
-            
-            if (chore && player.pendingChores.includes(choreId)) {
-                player.pendingChores = player.pendingChores.filter(id => id !== choreId);
-                player.completedChores.push(choreId);
-                player.stars += chore.points;
-                
-                const newLevel = Math.floor(player.stars / 5) + 1;
-                if (newLevel > player.level) {
-                    player.level = newLevel;
-                    showCelebration(`${player.name} leveled up to Level ${newLevel}! 🎉`);
-                }
-                
-                if (player.stars >= gameData.starsTarget) {
-                    showGrandPrize(player.name);
-                    player.stars = 0;
-                    player.completedChores = [];
-                }
-                
-                updateDisplay();
-                saveGameData();
-            }
-        }
-        
-        function rejectChore(choreId, child) {
-            const player = gameData.players[child];
-            player.pendingChores = player.pendingChores.filter(id => id !== choreId);
-            updateDisplay();
-        }
-        
-        function addChore() {
-            const name = document.getElementById('newChoreName').value.trim();
-            const points = parseInt(document.getElementById('newChorePoints').value);
-            const frequency = document.getElementById('newChoreFreq').value;
-            const assignChild1 = document.getElementById('assignChild1').checked;
-            const assignChild2 = document.getElementById('assignChild2').checked;
-            
-            if (name && points) {
-                const assignedTo = [];
-                if (assignChild1) assignedTo.push('child1');
-                if (assignChild2) assignedTo.push('child2');
-                
-                if (assignedTo.length === 0) {
-                    alert('Please assign the quest to at least one child!');
-                    return;
-                }
-                
-                gameData.chores.push({
-                    id: nextChoreId++,
-                    name: name,
-                    points: points,
-                    frequency: frequency,
-                    assignedTo: assignedTo
-                });
-                
-                document.getElementById('newChoreName').value = '';
-                document.getElementById('newChorePoints').value = '1';
-                document.getElementById('newChoreFreq').value = 'daily';
-                document.getElementById('assignChild1').checked = true;
-                document.getElementById('assignChild2').checked = true;
-                
-                updateDisplay();
-                saveGameData();
-                showAchievement('New quest created and assigned! 📜');
-            }
-        }
-        
-        function deleteChore(choreId) {
-            gameData.chores = gameData.chores.filter(chore => chore.id !== choreId);
-            
-            ['child1', 'child2'].forEach(child => {
-                const player = gameData.players[child];
-                player.completedChores = player.completedChores.filter(id => id !== choreId);
-                player.pendingChores = player.pendingChores.filter(id => id !== choreId);
-                player.activeQuests = player.activeQuests.filter(id => id !== choreId);
-            });
-            
-            updateDisplay();
-            saveGameData();
-        }
-        
-        function updateStarsTarget() {
-            const newTarget = parseInt(document.getElementById('starsTarget').value);
-            if (newTarget > 0) {
-                gameData.starsTarget = newTarget;
-                updateDisplay();
-                saveGameData();
-                showAchievement('Grand prize target updated! 🎯');
-            }
-        }
-        
-        function editAssignment(choreId) {
-            const chore = gameData.chores.find(c => c.id === choreId);
-            if (!chore) return;
-            
-            const modal = document.getElementById('gameModal');
-            const title = document.getElementById('modalTitle');
-            const content = document.getElementById('modalContent');
-            
-            title.textContent = '👥 Edit Quest Assignment';
-            
-            const isAssignedToChild1 = chore.assignedTo && chore.assignedTo.includes('child1');
-            const isAssignedToChild2 = chore.assignedTo && chore.assignedTo.includes('child2');
-            
-            content.innerHTML = `
-                <p style="font-size: 1.1em; margin-bottom: 20px;">Quest: <strong>${chore.name}</strong></p>
-                <div style="text-align: left; margin: 20px 0;">
-                    <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
-                        <input type="checkbox" id="editAssignChild1" ${isAssignedToChild1 ? 'checked' : ''}> 
-                        ⚡ Harry (Wizard Theme)
-                    </label>
-                    <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
-                        <input type="checkbox" id="editAssignChild2" ${isAssignedToChild2 ? 'checked' : ''}> 
-                        🦄 Princess (Royal Theme)
-                    </label>
-                </div>
-                <button class="modal-btn" onclick="saveAssignment(${choreId})">Save Assignment</button>
-                <button class="modal-btn" onclick="closeModal()" style="background: #718096;">Cancel</button>
-            `;
-            
-            modal.style.display = 'flex';
-        }
-        
-        function saveAssignment(choreId) {
-            const chore = gameData.chores.find(c => c.id === choreId);
-            if (!chore) return;
-            
-            const assignChild1 = document.getElementById('editAssignChild1').checked;
-            const assignChild2 = document.getElementById('editAssignChild2').checked;
-            
-            chore.assignedTo = [];
-            if (assignChild1) chore.assignedTo.push('child1');
-            if (assignChild2) chore.assignedTo.push('child2');
-            
-            closeModal();
-            updateDisplay();
-            saveGameData();
-            showAchievement('Quest assignment updated! 👥');
-        }
-        
-        // Utility functions
-        function closeModal() {
-            document.getElementById('gameModal').style.display = 'none';
-        }
-        
-        function showAchievement(text) {
-            const notification = document.getElementById('achievementNotification');
-            const textElement = document.getElementById('achievementText');
-            
-            textElement.textContent = text;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        function showCelebration(text) {
-            const popup = document.getElementById('celebrationPopup');
-            const textElement = document.getElementById('celebrationText');
-            
-            textElement.textContent = text;
-            popup.classList.add('show');
-        }
-        
-        function showGrandPrize(playerName) {
-            const popup = document.getElementById('celebrationPopup');
-            const textElement = document.getElementById('celebrationText');
-            
-            textElement.innerHTML = `🎊 GRAND PRIZE WINNER! 🎊<br>${playerName} has earned ${gameData.starsTarget} stars!<br>Time to claim your amazing reward! 🎁`;
-            popup.classList.add('show');
-        }
-        
-        function closeCelebration() {
-            document.getElementById('celebrationPopup').classList.remove('show');
-        }
-        
-        function saveGameData() {
-            try {
-                window.choreGameData = JSON.stringify(gameData);
-            } catch (e) {
-                console.log('Could not save game data');
-            }
-        }
-        
-        function loadGameData() {
-            try {
-                if (window.choreGameData) {
-                    const savedData = JSON.parse(window.choreGameData);
-                    gameData = { ...gameData, ...savedData };
-                    
-                    if (gameData.chores.length > 0) {
-                        nextChoreId = Math.max(...gameData.chores.map(c => c.id)) + 1;
-                    }
-                }
-            } catch (e) {
-                console.log('Could not load game data');
-            }
-        }
-        
-        // Initialize
-        function init() {
-            loadGameData();
-            switchMode('child1');
-            updateDisplay();
-            setInterval(saveGameData, 30000);
-        }
-        
-        // Start the game
-        init();
-    </script>
-</body>
-</html>
