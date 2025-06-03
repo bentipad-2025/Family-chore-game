@@ -445,15 +445,19 @@
             color: #4a5568;
         }
         
-        .spell-game {
+        .challenge-game, .memory-game {
             margin: 20px 0;
         }
         
-        .spell-word {
-            font-size: 2em;
+        .challenge-question {
+            font-size: 1.2em;
             color: #2d3748;
             margin: 20px 0;
-            letter-spacing: 3px;
+            line-height: 1.5;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #4299e1;
         }
         
         .spell-input {
@@ -744,11 +748,71 @@
         let currentMode = 'parent';
         let nextChoreId = 6;
         
-        // Fun words for mini-games
-        const miniGameWords = [
-            "MAGIC", "BRAVE", "CLEAN", "HELP", "KIND", "SMART", 
-            "HAPPY", "STRONG", "CASTLE", "DRAGON", "HERO", "QUEST"
-        ];
+        // Mini-game challenges for different themes
+        const miniGameChallenges = {
+            child1: { // Harry's challenges - harder and more varied
+                math: [
+                    { question: "If you have 7 chocolate frogs and eat 3, then buy 5 more, how many do you have?", answer: "9" },
+                    { question: "Hogwarts has 4 houses. If each house has 15 students in your year, how many students total?", answer: "60" },
+                    { question: "A Quidditch match lasts 3 hours. How many minutes is that?", answer: "180" },
+                    { question: "If a spell requires 12 ingredients and you have 8, how many more do you need?", answer: "4" },
+                    { question: "Ron has 25 wizard cards. He gives 7 to Harry and 6 to Hermione. How many does he have left?", answer: "12" }
+                ],
+                riddles: [
+                    { question: "I fly without wings, I see without eyes. I'm used in Quidditch, what am I?", answer: "SNITCH" },
+                    { question: "I'm round and golden, with wings so fast. Catch me to win, but I never last. What am I?", answer: "SNITCH" },
+                    { question: "Three heads I have, but one body. Fluffy am I, what creature could I be?", answer: "CERBERUS" },
+                    { question: "I change my form but keep my mind, leaving my body far behind. What am I?", answer: "ANIMAGUS" },
+                    { question: "I'm a sport with four balls, played up high. Catch one small ball and you'll surely fly. What sport?", answer: "QUIDDITCH" }
+                ],
+                spells: [
+                    { question: "Spell the charm that makes things fly: _ _ _ _ _ _ _ _ _", hint: "Wingardium...", answer: "LEVIOSA" },
+                    { question: "Spell the light charm: _ _ _ _ _", hint: "Lumos backwards plus 'x'", answer: "LUMOS" },
+                    { question: "What creature guards Gringotts bank?", answer: "DRAGON" },
+                    { question: "Spell Hermione's last name: _ _ _ _ _ _ _ _", hint: "Sounds like 'danger'", answer: "GRANGER" },
+                    { question: "What house is known for bravery?", answer: "GRYFFINDOR" }
+                ],
+                memory: [
+                    { 
+                        question: "Memorize this spell sequence, then type it back:",
+                        sequence: ["LUMOS", "ALOHOMORA", "EXPELLIARMUS"],
+                        display: "LUMOS → ALOHOMORA → EXPELLIARMUS"
+                    },
+                    {
+                        question: "Remember these Quidditch positions:",
+                        sequence: ["KEEPER", "CHASER", "BEATER"],
+                        display: "KEEPER → CHASER → BEATER"
+                    }
+                ]
+            },
+            child2: { // Princess challenges - age-appropriate for 6-year-old
+                math: [
+                    { question: "If you have 5 unicorns and 3 more join you, how many unicorns total?", answer: "8" },
+                    { question: "A princess has 12 jewels. She gives 4 to her sister. How many does she have left?", answer: "8" },
+                    { question: "If each castle tower has 6 windows and there are 2 towers, how many windows total?", answer: "12" },
+                    { question: "You bake 15 royal cookies and eat 3. How many are left?", answer: "12" }
+                ],
+                riddles: [
+                    { question: "I have a horn and I'm magical white. In fairy tales, I'm quite a sight. What am I?", answer: "UNICORN" },
+                    { question: "I live in a castle, wear a crown so bright. I help others and do what's right. What am I?", answer: "PRINCESS" },
+                    { question: "I'm tall and grand, with towers high. In fairy tales, I touch the sky. What am I?", answer: "CASTLE" },
+                    { question: "I sparkle and shine, on fingers I go. In treasure chests, I often show. What am I?", answer: "RING" }
+                ],
+                colors: [
+                    { question: "Mix red and blue to make what color?", answer: "PURPLE" },
+                    { question: "Mix yellow and red to make what color?", answer: "ORANGE" },
+                    { question: "What color is the sun?", answer: "YELLOW" },
+                    { question: "What color do you get when you mix all rainbow colors?", answer: "WHITE" }
+                ],
+                memory: [
+                    {
+                        question: "Remember these royal items:",
+                        sequence: ["CROWN", "WAND", "JEWEL"],
+                        display: "CROWN → WAND → JEWEL"
+                    }
+                ]
+            }
+        };
         
         // Initialize game
         function initGame() {
@@ -919,55 +983,201 @@
             const title = document.getElementById('miniGameTitle');
             const content = document.getElementById('miniGameContent');
             
-            // Choose random word for spelling game
-            const word = miniGameWords[Math.floor(Math.random() * miniGameWords.length)];
+            const challenges = miniGameChallenges[child];
+            if (!challenges) {
+                // Fallback for unknown child
+                skipMiniGame(choreId, child);
+                return;
+            }
             
-            title.textContent = `🎮 Quest Challenge: ${chore.name}`;
+            // Choose random challenge type based on child
+            let challengeTypes, selectedChallenge, challengeType;
+            
+            if (child === 'child1') {
+                challengeTypes = ['math', 'riddles', 'spells', 'memory'];
+                challengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+                
+                if (challengeType === 'memory') {
+                    selectedChallenge = challenges[challengeType][Math.floor(Math.random() * challenges[challengeType].length)];
+                    showMemoryGame(selectedChallenge, choreId, child, chore);
+                    return;
+                }
+            } else {
+                challengeTypes = ['math', 'riddles', 'colors', 'memory'];
+                challengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+                
+                if (challengeType === 'memory') {
+                    selectedChallenge = challenges[challengeType][Math.floor(Math.random() * challenges[challengeType].length)];
+                    showMemoryGame(selectedChallenge, choreId, child, chore);
+                    return;
+                }
+            }
+            
+            selectedChallenge = challenges[challengeType][Math.floor(Math.random() * challenges[challengeType].length)];
+            
+            const challengeIcons = {
+                math: '🧮',
+                riddles: '🧩', 
+                spells: '⚡',
+                colors: '🌈'
+            };
+            
+            const challengeTitles = {
+                math: 'Mathematical Challenge',
+                riddles: 'Riddle Challenge',
+                spells: 'Spell Challenge',
+                colors: 'Color Magic Challenge'
+            };
+            
+            title.textContent = `${challengeIcons[challengeType]} ${challengeTitles[challengeType]}`;
+            
+            let hintHtml = '';
+            if (selectedChallenge.hint) {
+                hintHtml = `<div style="margin: 10px 0; font-size: 0.9em; color: #666; font-style: italic;">💡 Hint: ${selectedChallenge.hint}</div>`;
+            }
             
             content.innerHTML = `
-                <div class="spell-game">
-                    <p>To complete this quest, spell this magic word:</p>
-                    <div class="spell-word">${word}</div>
-                    <input type="text" class="spell-input" id="spellInput" placeholder="Type the word here..." maxlength="${word.length}">
+                <div class="challenge-game">
+                    <p style="font-size: 1.1em; margin-bottom: 15px; line-height: 1.4;">${selectedChallenge.question}</p>
+                    ${hintHtml}
+                    <input type="text" class="spell-input" id="challengeInput" placeholder="Your answer..." style="text-transform: uppercase;">
                     <br>
-                    <button class="mini-game-btn" onclick="checkSpelling('${word}', ${choreId}, '${child}')">Cast Spell!</button>
+                    <button class="mini-game-btn" onclick="checkChallenge('${selectedChallenge.answer.toUpperCase()}', ${choreId}, '${child}', '${challengeType}')">Submit Answer!</button>
                     <button class="mini-game-btn" onclick="skipMiniGame(${choreId}, '${child}')" style="background: #718096;">Skip Challenge</button>
+                    <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
                 </div>
             `;
             
             modal.style.display = 'flex';
             
-            // Focus on input
+            // Focus on input and auto-uppercase
             setTimeout(() => {
-                document.getElementById('spellInput').focus();
+                const input = document.getElementById('challengeInput');
+                input.focus();
+                
+                // Auto-uppercase as they type
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.toUpperCase();
+                });
+                
+                // Allow Enter key to submit
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkChallenge(selectedChallenge.answer.toUpperCase(), choreId, child, challengeType);
+                    }
+                });
             }, 100);
-            
-            // Allow Enter key to submit
-            document.getElementById('spellInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkSpelling(word, choreId, child);
-                }
-            });
         }
         
-        // Check spelling in mini-game
-        function checkSpelling(correctWord, choreId, child) {
-            const input = document.getElementById('spellInput');
-            const userWord = input.value.toUpperCase().trim();
+        // Show memory game
+        function showMemoryGame(challenge, choreId, child, chore) {
+            const modal = document.getElementById('miniGameModal');
+            const title = document.getElementById('miniGameTitle');
+            const content = document.getElementById('miniGameContent');
             
-            if (userWord === correctWord) {
-                // Correct! Complete the quest
-                finishQuest(choreId, child, true);
+            title.textContent = '🧠 Memory Challenge';
+            
+            content.innerHTML = `
+                <div class="memory-game">
+                    <p style="font-size: 1.1em; margin-bottom: 15px;">${challenge.question}</p>
+                    <div id="memory-display" style="font-size: 1.5em; padding: 20px; background: #f0f8ff; border-radius: 10px; margin: 20px 0; min-height: 60px; display: flex; align-items: center; justify-content: center;">
+                        ${challenge.display}
+                    </div>
+                    <div id="memory-input-area" style="display: none;">
+                        <p>Now type them back in order (separated by spaces):</p>
+                        <input type="text" class="spell-input" id="memoryInput" placeholder="Type the sequence..." style="text-transform: uppercase;">
+                        <br>
+                        <button class="mini-game-btn" onclick="checkMemoryChallenge('${challenge.sequence.join(' ')}', ${choreId}, '${child}')">Check Memory!</button>
+                        <button class="mini-game-btn" onclick="skipMiniGame(${choreId}, '${child}')" style="background: #718096;">Skip Challenge</button>
+                        <div id="memory-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    </div>
+                    <button class="mini-game-btn" id="memory-ready-btn" onclick="startMemoryInput()">I've Memorized It!</button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Start memory input phase
+        function startMemoryInput() {
+            document.getElementById('memory-display').style.display = 'none';
+            document.getElementById('memory-ready-btn').style.display = 'none';
+            document.getElementById('memory-input-area').style.display = 'block';
+            
+            setTimeout(() => {
+                const input = document.getElementById('memoryInput');
+                input.focus();
+                
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.toUpperCase();
+                });
+                
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const correctAnswer = document.querySelector('button[onclick*="checkMemoryChallenge"]')
+                            .getAttribute('onclick').match(/'([^']+)'/)[1];
+                        checkMemoryChallenge(correctAnswer, 
+                            parseInt(document.querySelector('button[onclick*="checkMemoryChallenge"]')
+                                .getAttribute('onclick').match(/(\d+)/)[1]),
+                            document.querySelector('button[onclick*="checkMemoryChallenge"]')
+                                .getAttribute('onclick').match(/'child\d'/)[0].replace(/'/g, '')
+                        );
+                    }
+                });
+            }, 100);
+        }
+        
+        // Check memory challenge
+        function checkMemoryChallenge(correctSequence, choreId, child) {
+            const input = document.getElementById('memoryInput');
+            const userAnswer = input.value.trim().toUpperCase();
+            const feedback = document.getElementById('memory-feedback');
+            
+            if (userAnswer === correctSequence) {
+                feedback.style.color = '#48bb78';
+                feedback.textContent = '🎉 Perfect memory! Well done!';
+                
+                setTimeout(() => {
+                    finishQuest(choreId, child, true);
+                }, 1500);
             } else {
-                // Wrong, give feedback
+                feedback.style.color = '#e53e3e';
+                feedback.textContent = '❌ Not quite right. Try again!';
+                input.value = '';
+                input.focus();
+            }
+        }
+        
+        // Check challenge answer
+        function checkChallenge(correctAnswer, choreId, child, challengeType) {
+            const input = document.getElementById('challengeInput');
+            const userAnswer = input.value.trim().toUpperCase();
+            const feedback = document.getElementById('challenge-feedback');
+            
+            if (userAnswer === correctAnswer) {
+                const successMessages = {
+                    math: '🧮 Excellent calculation!',
+                    riddles: '🧩 Brilliant deduction!',
+                    spells: '⚡ Spell cast perfectly!',
+                    colors: '🌈 Color magic mastered!'
+                };
+                
+                feedback.style.color = '#48bb78';
+                feedback.textContent = successMessages[challengeType] || '🎉 Correct!';
+                
+                setTimeout(() => {
+                    finishQuest(choreId, child, true);
+                }, 1500);
+            } else {
+                feedback.style.color = '#e53e3e';
+                feedback.textContent = '❌ Not quite right. Try again!';
                 input.style.borderColor = '#e53e3e';
                 input.value = '';
-                input.placeholder = 'Try again! Spell: ' + correctWord;
+                input.focus();
                 
                 // Reset border color after 2 seconds
                 setTimeout(() => {
                     input.style.borderColor = '#e2e8f0';
-                    input.placeholder = 'Type the word here...';
                 }, 2000);
             }
         }
