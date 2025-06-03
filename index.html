@@ -15,7 +15,7 @@
             font-family: 'Comic Sans MS', cursive, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 10px;
         }
         
         .container {
@@ -25,38 +25,11 @@
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            min-height: 100vh;
-            position: relative;
-        }
-        
-        .floating-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .particle {
-            position: absolute;
-            font-size: 20px;
-            animation: float 6s infinite ease-in-out;
-            opacity: 0.7;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10%, 90% { opacity: 0.7; }
-            50% { transform: translateY(-20px) rotate(180deg); }
         }
         
         .header {
             text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 10;
+            margin-bottom: 30px;
         }
         
         .title {
@@ -83,8 +56,6 @@
             margin-bottom: 30px;
             justify-content: center;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 10;
         }
         
         .mode-btn {
@@ -96,23 +67,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .mode-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-        
-        .mode-btn:hover::before {
-            left: 100%;
         }
         
         .mode-btn.active {
@@ -126,18 +80,16 @@
         
         .player-section {
             display: none;
-            animation: slideIn 0.5s ease-out;
-            position: relative;
-            z-index: 10;
+            animation: fadeIn 0.5s ease-in;
         }
         
         .player-section.active {
             display: block;
         }
         
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .adventure-map {
@@ -146,27 +98,8 @@
             padding: 30px;
             margin-bottom: 30px;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .map-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            background-image: 
-                radial-gradient(circle at 20% 50%, #ffd700 2px, transparent 2px),
-                radial-gradient(circle at 80% 20%, #ffd700 1px, transparent 1px),
-                radial-gradient(circle at 40% 80%, #ffd700 1px, transparent 1px);
-            background-size: 50px 50px, 30px 30px, 40px 40px;
-            animation: twinkle 3s ease-in-out infinite;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.1; }
-            50% { opacity: 0.3; }
+            text-align: center;
+            color: white;
         }
         
         .character-avatar {
@@ -179,11 +112,8 @@
             justify-content: center;
             font-size: 4em;
             background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
             border: 3px solid rgba(255,255,255,0.3);
             animation: bounce 2s ease-in-out infinite;
-            position: relative;
-            z-index: 2;
         }
         
         @keyframes bounce {
@@ -191,28 +121,11 @@
             50% { transform: translateY(-10px); }
         }
         
-        .character-level {
-            text-align: center;
-            color: white;
-            margin-bottom: 20px;
-        }
-        
-        .level-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 1.2em;
-            font-weight: bold;
-            backdrop-filter: blur(10px);
-        }
-        
         .progress-bar-container {
             background: rgba(255,255,255,0.2);
             border-radius: 10px;
             padding: 15px;
             margin: 20px 0;
-            backdrop-filter: blur(10px);
         }
         
         .progress-bar {
@@ -220,7 +133,6 @@
             height: 20px;
             border-radius: 10px;
             overflow: hidden;
-            position: relative;
         }
         
         .progress-fill {
@@ -228,23 +140,6 @@
             background: linear-gradient(90deg, #ffd700, #ffed4e);
             border-radius: 10px;
             transition: width 0.5s ease;
-            position: relative;
-        }
-        
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
         
         .quest-board {
@@ -252,26 +147,12 @@
             border-radius: 20px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        .quest-board::before {
-            content: '📋';
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            font-size: 2em;
-            background: white;
-            padding: 5px 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .quest-title {
             font-size: 1.8em;
             color: #4a5568;
             margin-bottom: 20px;
-            margin-left: 60px;
         }
         
         .quest-item {
@@ -281,24 +162,6 @@
             margin-bottom: 15px;
             border-left: 5px solid;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .quest-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 49%, rgba(255,255,255,0.1) 50%, transparent 51%);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-        
-        .quest-item:hover::before {
-            transform: translateX(100%);
         }
         
         .quest-item:hover {
@@ -321,16 +184,6 @@
             font-size: 1.2em;
             font-weight: bold;
             color: #2d3748;
-        }
-        
-        .quest-difficulty {
-            display: flex;
-            gap: 2px;
-        }
-        
-        .difficulty-star {
-            color: #ffd700;
-            font-size: 1.2em;
         }
         
         .quest-reward {
@@ -363,26 +216,6 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .action-btn:active::before {
-            width: 300px;
-            height: 300px;
         }
         
         .start-quest {
@@ -416,7 +249,55 @@
             50% { opacity: 0.5; }
         }
         
-        .mini-game-modal {
+        .admin-section {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .input-group input, .input-group select {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .add-btn {
+            background: #4299e1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .delete-btn {
+            background: #e53e3e;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -429,61 +310,22 @@
             z-index: 1000;
         }
         
-        .mini-game-content {
+        .modal-content {
             background: white;
             border-radius: 20px;
             padding: 30px;
             max-width: 500px;
             width: 90%;
             text-align: center;
-            position: relative;
         }
         
-        .mini-game-title {
+        .modal-title {
             font-size: 2em;
             margin-bottom: 20px;
             color: #4a5568;
         }
         
-        .assignment-editor {
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .assignment-editor label {
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-        
-        .assignment-editor label:hover {
-            background-color: #f0f8ff;
-        }
-        
-        .assignment-editor label {
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-        
-        .assignment-editor label:hover {
-            background-color: #f0f8ff;
-        }
-        
-        .challenge-question {
-            font-size: 1.2em;
-            color: #2d3748;
-            margin: 20px 0;
-            line-height: 1.5;
-            padding: 15px;
-            background: #f7fafc;
-            border-radius: 10px;
-            border-left: 4px solid #4299e1;
-        }
-        
-        .spell-input {
+        .modal-input {
             padding: 15px;
             font-size: 1.2em;
             border: 3px solid #e2e8f0;
@@ -493,7 +335,7 @@
             margin-bottom: 20px;
         }
         
-        .mini-game-btn {
+        .modal-btn {
             background: linear-gradient(45deg, #4299e1, #3182ce);
             color: white;
             padding: 15px 30px;
@@ -548,76 +390,9 @@
         .achievement-notification.show {
             transform: translateX(0);
         }
-        
-        .admin-section {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .admin-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #4a5568;
-        }
-        
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .input-group input, .input-group select {
-            padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-        
-        .add-btn {
-            background: #4299e1;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .delete-btn {
-            background: #e53e3e;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8em;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-                margin: 10px;
-            }
-            
-            .title {
-                font-size: 2em;
-            }
-            
-            .character-avatar {
-                width: 80px;
-                height: 80px;
-                font-size: 2.5em;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="floating-particles" id="particles"></div>
-    
     <div class="container">
         <div class="header">
             <h1 class="title">🌟 Family Chore Adventure 🌟</h1>
@@ -663,7 +438,7 @@
                 </div>
                 <button class="add-btn" onclick="addChore()">Create Quest</button>
                 <div style="margin-top: 10px; font-size: 0.9em; color: #666; font-style: italic;">
-                    💡 Tip: The game will automatically theme your chore names! "Clean the drawers" becomes "Purify the magical storage chambers" for Harry and "Beautify the royal treasure drawers" for Princess.
+                    💡 Tip: The game will automatically theme your chore names!
                 </div>
             </div>
             
@@ -681,16 +456,15 @@
         <!-- Child 1 Mode -->
         <div id="child1-section" class="player-section">
             <div class="adventure-map">
-                <div class="map-background"></div>
                 <div class="character-avatar">⚡</div>
-                <div class="character-level">
-                    <div class="level-badge">Level <span id="child1-level">1</span> Wizard</div>
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 1.5em; font-weight: bold;">Level <span id="child1-level">1</span> Wizard</div>
                 </div>
                 <div class="progress-bar-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="child1-progress-fill" style="width: 0%;"></div>
                     </div>
-                    <div style="color: white; text-align: center; margin-top: 10px; font-weight: bold;">
+                    <div style="text-align: center; margin-top: 10px; font-weight: bold;">
                         <span id="child1-stars-display">0</span> / <span id="child1-target-display">10</span> Magic Stars ⭐
                     </div>
                 </div>
@@ -705,16 +479,15 @@
         <!-- Child 2 Mode -->
         <div id="child2-section" class="player-section">
             <div class="adventure-map" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
-                <div class="map-background"></div>
                 <div class="character-avatar">🦄</div>
-                <div class="character-level">
-                    <div class="level-badge">Level <span id="child2-level">1</span> Princess</div>
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 1.5em; font-weight: bold;">Level <span id="child2-level">1</span> Princess</div>
                 </div>
                 <div class="progress-bar-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="child2-progress-fill" style="width: 0%; background: linear-gradient(90deg, #ff69b4, #ffc0cb);"></div>
                     </div>
-                    <div style="color: white; text-align: center; margin-top: 10px; font-weight: bold;">
+                    <div style="text-align: center; margin-top: 10px; font-weight: bold;">
                         <span id="child2-stars-display">0</span> / <span id="child2-target-display">10</span> Royal Stars ⭐
                     </div>
                 </div>
@@ -727,12 +500,11 @@
         </div>
     </div>
     
-    <!-- Mini Game Modal -->
-    <div class="mini-game-modal" id="miniGameModal">
-        <div class="mini-game-content">
-            <h2 class="mini-game-title" id="miniGameTitle">Quest Challenge!</h2>
-            <div id="miniGameContent"></div>
-            <button class="mini-game-btn" onclick="closeMiniGame()">Close</button>
+    <!-- Modal -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="modalTitle">Challenge</h2>
+            <div id="modalContent"></div>
         </div>
     </div>
     
@@ -741,7 +513,7 @@
         <h2>🎉 QUEST COMPLETED! 🎉</h2>
         <p id="celebrationText"></p>
         <div style="font-size: 3em; margin: 20px 0;">✨🌟🎊</div>
-        <button class="mini-game-btn" onclick="closeCelebration()">Awesome!</button>
+        <button class="modal-btn" onclick="closeCelebration()">Awesome!</button>
     </div>
     
     <!-- Achievement Notification -->
@@ -750,7 +522,10 @@
     </div>
     
     <script>
-        // Game data
+        // Game configuration
+        const PARENT_PIN = "1234";
+        
+        // Game state
         let gameData = {
             starsTarget: 10,
             chores: [
@@ -780,322 +555,157 @@
             }
         };
         
-        // Theme conversion system
+        let currentMode = 'child1';
+        let nextChoreId = 6;
+        let parentAuthenticated = false;
+        
+        // Theme conversion
         const choreThemes = {
-            child1: { // Harry Potter themes
+            child1: {
                 keywords: {
                     'bed': 'magical dormitory bed',
-                    'toys': 'magical artifacts and spell components',
+                    'toys': 'magical artifacts',
                     'room': 'Hogwarts dormitory',
-                    'clothes': 'wizard robes and magical garments',
-                    'shoes': 'magical footwear collection',
+                    'clothes': 'wizard robes',
+                    'shoes': 'magical footwear',
                     'drawers': 'magical storage chambers',
                     'kitchen': 'potions laboratory',
                     'dishes': 'cauldrons and magical vessels',
-                    'bathroom': 'magical washroom',
-                    'books': 'spellbooks and magical tomes',
-                    'desk': 'study table for magical learning',
-                    'floor': 'chamber floors',
-                    'windows': 'enchanted glass portals',
-                    'trash': 'magical waste disposal',
-                    'laundry': 'magical garment cleaning',
-                    'pets': 'magical creatures'
+                    'bathroom': 'magical washroom'
                 },
                 verbs: {
                     'make': 'enchant',
                     'clean': 'purify',
                     'organize': 'arrange magically',
                     'put away': 'store in magical order',
-                    'tidy': 'cast tidying charms on',
-                    'wash': 'cleanse with magic',
-                    'feed': 'tend to',
-                    'water': 'nurture with magical essence'
+                    'tidy': 'cast tidying charms on'
                 }
             },
-            child2: { // Princess themes
+            child2: {
                 keywords: {
                     'bed': 'royal princess bed',
-                    'toys': 'royal treasures and unicorn friends',
+                    'toys': 'royal treasures',
                     'room': 'princess chambers',
-                    'clothes': 'royal gowns and magical dresses',
+                    'clothes': 'royal gowns',
                     'shoes': 'royal shoe collection',
                     'drawers': 'royal treasure drawers',
                     'kitchen': 'royal kitchen',
                     'dishes': 'royal china and crystal',
-                    'bathroom': 'royal powder room',
-                    'books': 'fairy tale collection',
-                    'desk': 'royal writing desk',
-                    'floor': 'palace floors',
-                    'windows': 'castle windows',
-                    'trash': 'kingdom waste management',
-                    'laundry': 'royal garment care',
-                    'pets': 'royal companions'
+                    'bathroom': 'royal powder room'
                 },
                 verbs: {
                     'make': 'prepare royally',
                     'clean': 'beautify',
                     'organize': 'arrange elegantly',
                     'put away': 'store in royal order',
-                    'tidy': 'make palace-perfect',
-                    'wash': 'cleanse with royal care',
-                    'feed': 'care for',
-                    'water': 'tend with princess magic'
+                    'tidy': 'make palace-perfect'
                 }
             }
         };
         
-        // Convert chore name to themed version
+        // Mini-game challenges
+        const challenges = {
+            child1: {
+                math: [
+                    { question: "If you have 7 chocolate frogs and eat 3, then buy 5 more, how many do you have?", answer: "9" },
+                    { question: "Hogwarts has 4 houses with 15 students each. How many students total?", answer: "60" },
+                    { question: "A Quidditch match lasts 3 hours. How many minutes is that?", answer: "180" }
+                ],
+                riddles: [
+                    { question: "I fly without wings, I see without eyes. I'm used in Quidditch, what am I?", answer: "SNITCH" },
+                    { question: "Three heads I have, but one body. Fluffy am I, what creature could I be?", answer: "CERBERUS" }
+                ]
+            },
+            child2: {
+                spelling: [
+                    { question: "Spell this magical word:", word: "LOVE", display: "L-O-V-E" },
+                    { question: "Spell this royal word:", word: "ROSE", display: "R-O-S-E" },
+                    { question: "Spell this pretty word:", word: "STAR", display: "S-T-A-R" }
+                ],
+                counting: [
+                    { question: "Count the hearts: ❤️❤️❤️", answer: "3" },
+                    { question: "Count the stars: ⭐⭐⭐⭐⭐", answer: "5" },
+                    { question: "Count the flowers: 🌸🌸🌸🌸", answer: "4" }
+                ]
+            }
+        };
+        
+        // Theme conversion function
         function getThemedChoreName(originalName, childId) {
             if (!choreThemes[childId]) return originalName;
             
             let themedName = originalName.toLowerCase();
             const theme = choreThemes[childId];
             
-            // Replace keywords
             Object.keys(theme.keywords).forEach(keyword => {
                 const regex = new RegExp(keyword, 'gi');
                 themedName = themedName.replace(regex, theme.keywords[keyword]);
             });
             
-            // Replace verbs
             Object.keys(theme.verbs).forEach(verb => {
                 const regex = new RegExp(`\\b${verb}\\b`, 'gi');
                 themedName = themedName.replace(regex, theme.verbs[verb]);
             });
             
-            // Capitalize first letter
             return themedName.charAt(0).toUpperCase() + themedName.slice(1);
         }
         
-        let currentMode = 'parent';
-        let nextChoreId = 6;
-        let parentAuthenticated = false;
-        const PARENT_PIN = "1234"; // Change this to your preferred PIN
-        const miniGameChallenges = {
-            child1: { // Harry's challenges - harder and more varied
-                math: [
-                    { question: "If you have 7 chocolate frogs and eat 3, then buy 5 more, how many do you have?", answer: "9" },
-                    { question: "Hogwarts has 4 houses. If each house has 15 students in your year, how many students total?", answer: "60" },
-                    { question: "A Quidditch match lasts 3 hours. How many minutes is that?", answer: "180" },
-                    { question: "If a spell requires 12 ingredients and you have 8, how many more do you need?", answer: "4" },
-                    { question: "Ron has 25 wizard cards. He gives 7 to Harry and 6 to Hermione. How many does he have left?", answer: "12" }
-                ],
-                riddles: [
-                    { question: "I fly without wings, I see without eyes. I'm used in Quidditch, what am I?", answer: "SNITCH" },
-                    { question: "I'm round and golden, with wings so fast. Catch me to win, but I never last. What am I?", answer: "SNITCH" },
-                    { question: "Three heads I have, but one body. Fluffy am I, what creature could I be?", answer: "CERBERUS" },
-                    { question: "I change my form but keep my mind, leaving my body far behind. What am I?", answer: "ANIMAGUS" },
-                    { question: "I'm a sport with four balls, played up high. Catch one small ball and you'll surely fly. What sport?", answer: "QUIDDITCH" }
-                ],
-                spells: [
-                    { question: "Spell the charm that makes things fly: _ _ _ _ _ _ _ _ _", hint: "Wingardium...", answer: "LEVIOSA" },
-                    { question: "Spell the light charm: _ _ _ _ _", hint: "Lumos backwards plus 'x'", answer: "LUMOS" },
-                    { question: "What creature guards Gringotts bank?", answer: "DRAGON" },
-                    { question: "Spell Hermione's last name: _ _ _ _ _ _ _ _", hint: "Sounds like 'danger'", answer: "GRANGER" },
-                    { question: "What house is known for bravery?", answer: "GRYFFINDOR" }
-                ],
-                memory: [
-                    { 
-                        question: "Memorize this spell sequence, then type it back:",
-                        sequence: ["LUMOS", "ALOHOMORA", "EXPELLIARMUS"],
-                        display: "LUMOS → ALOHOMORA → EXPELLIARMUS"
-                    },
-                    {
-                        question: "Remember these Quidditch positions:",
-                        sequence: ["KEEPER", "CHASER", "BEATER"],
-                        display: "KEEPER → CHASER → BEATER"
-                    }
-                ]
-            },
-            child2: { // Princess challenges - easier for 6-year-old
-                spelling: [
-                    { question: "Spell this magical word:", word: "LOVE", display: "L-O-V-E" },
-                    { question: "Spell this royal word:", word: "ROSE", display: "R-O-S-E" },
-                    { question: "Spell this pretty word:", word: "STAR", display: "S-T-A-R" },
-                    { question: "Spell this sweet word:", word: "CAKE", display: "C-A-K-E" },
-                    { question: "Spell this magical word:", word: "MOON", display: "M-O-O-N" },
-                    { question: "Spell this beautiful word:", word: "PINK", display: "P-I-N-K" },
-                    { question: "Spell this royal word:", word: "CROWN", display: "C-R-O-W-N" },
-                    { question: "Spell this magical word:", word: "MAGIC", display: "M-A-G-I-C" }
-                ],
-                counting: [
-                    { question: "Count the hearts: ❤️❤️❤️", answer: "3" },
-                    { question: "Count the stars: ⭐⭐⭐⭐⭐", answer: "5" },
-                    { question: "Count the flowers: 🌸🌸🌸🌸", answer: "4" },
-                    { question: "Count the unicorns: 🦄🦄", answer: "2" },
-                    { question: "Count the crowns: 👑👑👑👑👑👑", answer: "6" }
-                ],
-                easy_math: [
-                    { question: "What is 2 + 1?", answer: "3" },
-                    { question: "What is 4 + 1?", answer: "5" },
-                    { question: "What is 3 + 2?", answer: "5" },
-                    { question: "What is 5 - 1?", answer: "4" },
-                    { question: "What is 6 - 2?", answer: "4" }
-                ],
-                easy_questions: [
-                    { question: "What color do you get when you mix red and white?", answer: "PINK" },
-                    { question: "What do princesses wear on their heads?", answer: "CROWN" },
-                    { question: "What magical creature has a horn?", answer: "UNICORN" },
-                    { question: "What shape is the sun?", answer: "CIRCLE" },
-                    { question: "How many legs does a unicorn have?", answer: "4" }
-                ]
-            }
-        };
-        
-        // Initialize game
-        function initGame() {
-            createParticles();
-            // Start with Harry's mode instead of parent mode
-            switchModeWithoutAuth('child1');
-            updateDisplay();
-            
-            // Auto-save every 30 seconds
-            setInterval(saveGameData, 30000);
-            
-            // Load saved data
-            loadGameData();
-        }
-        
-        // Create floating particles
-        function createParticles() {
-            const particles = document.getElementById('particles');
-            const particleTypes = ['⭐', '✨', '🌟', '💫'];
-            
-            for (let i = 0; i < 15; i++) {
-                setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.textContent = particleTypes[Math.floor(Math.random() * particleTypes.length)];
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.animationDelay = Math.random() * 6 + 's';
-                    particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
-                    particles.appendChild(particle);
-                    
-                    // Remove particle after animation
-                    setTimeout(() => {
-                        if (particle.parentNode) {
-                            particle.parentNode.removeChild(particle);
-                        }
-                    }, 8000);
-                }, i * 500);
-            }
-            
-            // Continuously create new particles
-            setTimeout(createParticles, 8000);
-        }
-        
-        // Switch between modes
+        // Mode switching
         function switchMode(mode) {
-            // Check if trying to access parent mode
             if (mode === 'parent' && !parentAuthenticated) {
                 showPINPrompt();
                 return;
             }
             
             currentMode = mode;
-            
-            // Update button states
             document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector(`.${mode}-mode`).classList.add('active');
-            
-            // Show appropriate section
             document.querySelectorAll('.player-section').forEach(section => section.classList.remove('active'));
             document.getElementById(`${mode}-section`).classList.add('active');
-            
             updateDisplay();
         }
         
-        // Show PIN prompt for parent access
+        // PIN authentication
         function showPINPrompt() {
-            const modal = document.getElementById('miniGameModal');
-            const title = document.getElementById('miniGameTitle');
-            const content = document.getElementById('miniGameContent');
+            const modal = document.getElementById('gameModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
             
             title.textContent = '🔒 Quest Master Access';
-            
             content.innerHTML = `
-                <div class="pin-prompt">
-                    <p style="font-size: 1.1em; margin-bottom: 20px;">Enter the Quest Master PIN to access parent controls:</p>
-                    <input type="password" class="spell-input" id="pinInput" placeholder="Enter PIN..." maxlength="10" style="text-align: center; font-size: 1.5em; letter-spacing: 3px;">
-                    <br>
-                    <button class="mini-game-btn" onclick="checkPIN()">Enter Quest Master Mode</button>
-                    <button class="mini-game-btn" onclick="cancelPIN()" style="background: #718096;">Cancel</button>
-                    <div id="pin-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-                </div>
+                <p style="margin-bottom: 20px;">Enter the Quest Master PIN:</p>
+                <input type="password" class="modal-input" id="pinInput" placeholder="Enter PIN..." maxlength="10">
+                <br>
+                <button class="modal-btn" onclick="checkPIN()">Enter</button>
+                <button class="modal-btn" onclick="closeModal()" style="background: #718096;">Cancel</button>
+                <div id="pin-feedback" style="margin-top: 15px; font-weight: bold;"></div>
             `;
             
             modal.style.display = 'flex';
-            
-            // Focus on input
-            setTimeout(() => {
-                const input = document.getElementById('pinInput');
-                input.focus();
-                
-                // Allow Enter key to submit
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        checkPIN();
-                    }
-                });
-            }, 100);
+            setTimeout(() => document.getElementById('pinInput').focus(), 100);
         }
         
-        // Check PIN
         function checkPIN() {
             const input = document.getElementById('pinInput');
-            const enteredPIN = input.value.trim();
             const feedback = document.getElementById('pin-feedback');
             
-            if (enteredPIN === PARENT_PIN) {
+            if (input.value.trim() === PARENT_PIN) {
                 parentAuthenticated = true;
                 feedback.style.color = '#48bb78';
                 feedback.textContent = '✅ Access granted!';
-                
                 setTimeout(() => {
-                    closeMiniGame();
+                    closeModal();
                     switchMode('parent');
                 }, 1000);
             } else {
                 feedback.style.color = '#e53e3e';
                 feedback.textContent = '❌ Incorrect PIN. Try again.';
-                input.style.borderColor = '#e53e3e';
                 input.value = '';
                 input.focus();
-                
-                // Reset border color after 2 seconds
-                setTimeout(() => {
-                    input.style.borderColor = '#e2e8f0';
-                }, 2000);
             }
         }
         
-        // Cancel PIN prompt
-        function cancelPIN() {
-            closeMiniGame();
-            // Reset to a child mode if no mode is active
-            if (currentMode === 'parent') {
-                switchModeWithoutAuth('child1');
-            }
-        }
-        
-        // Switch mode without authentication (for internal use)
-        function switchModeWithoutAuth(mode) {
-            currentMode = mode;
-            
-            // Update button states
-            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-            if (document.querySelector(`.${mode}-mode`)) {
-                document.querySelector(`.${mode}-mode`).classList.add('active');
-            }
-            
-            // Show appropriate section
-            document.querySelectorAll('.player-section').forEach(section => section.classList.remove('active'));
-            document.getElementById(`${mode}-section`).classList.add('active');
-            
-            updateDisplay();
-        }
-        
-        // Update all displays
+        // Display updates
         function updateDisplay() {
             updatePlayerProgress();
             updateQuestDisplay();
@@ -1103,7 +713,6 @@
             updatePendingApprovals();
         }
         
-        // Update player progress
         function updatePlayerProgress() {
             ['child1', 'child2'].forEach(child => {
                 const player = gameData.players[child];
@@ -1123,20 +732,17 @@
             });
         }
         
-        // Update quest display
         function updateQuestDisplay() {
             ['child1', 'child2'].forEach(child => {
                 const container = document.getElementById(`${child}-quests`);
                 if (!container) return;
                 
                 const player = gameData.players[child];
-                let html = '';
-                
-                // Only show chores assigned to this child
                 const assignedChores = gameData.chores.filter(chore => 
                     chore.assignedTo && chore.assignedTo.includes(child)
                 );
                 
+                let html = '';
                 assignedChores.forEach(chore => {
                     const isActive = player.activeQuests.includes(chore.id);
                     const isPending = player.pendingChores.includes(chore.id);
@@ -1146,33 +752,28 @@
                     let actionHtml = '';
                     
                     if (isPending) {
-                        statusHtml = '<div class="quest-status status-pending">🕐 Awaiting approval from Quest Master</div>';
+                        statusHtml = '<div class="quest-status status-pending">🕐 Awaiting approval</div>';
                         actionHtml = '';
                     } else if (isCompleted) {
-                        statusHtml = '<div class="quest-status status-completed">✅ Quest completed!</div>';
+                        statusHtml = '<div class="quest-status status-completed">✅ Completed!</div>';
                         actionHtml = '';
                     } else if (isActive) {
-                        statusHtml = '<div class="quest-status">🎯 Quest in progress</div>';
+                        statusHtml = '<div class="quest-status">🎯 In progress</div>';
                         actionHtml = `<button class="action-btn complete-quest" onclick="completeQuest(${chore.id}, '${child}')">Complete Quest!</button>`;
                     } else {
                         statusHtml = '<div class="quest-status">📜 Available</div>';
                         actionHtml = `<button class="action-btn start-quest" onclick="startQuest(${chore.id}, '${child}')">Start Quest</button>`;
                     }
                     
-                    const difficultyStars = '★'.repeat(chore.points) + '☆'.repeat(5 - chore.points);
                     const questType = chore.frequency === 'daily' ? 'daily-quest' : 
                                     chore.frequency === 'weekly' ? 'weekly-quest' : 'monthly-quest';
-                    
-                    // Get themed name for this child
                     const themedName = getThemedChoreName(chore.name, child);
                     
                     html += `
                         <div class="quest-item ${questType}">
                             <div class="quest-header">
                                 <div class="quest-name">${themedName}</div>
-                                <div class="quest-difficulty">
-                                    <span class="difficulty-star">${difficultyStars}</span>
-                                </div>
+                                <div>${'★'.repeat(chore.points)}${'☆'.repeat(5 - chore.points)}</div>
                             </div>
                             <div class="quest-reward">
                                 <span>Reward:</span>
@@ -1194,372 +795,201 @@
                 container.innerHTML = html;
             });
         }
-                    } else if (isCompleted) {
-                        statusHtml = '<div class="quest-status status-completed">✅ Quest completed!</div>';
-                        actionHtml = '';
-                    } else if (isActive) {
-                        statusHtml = '<div class="quest-status">🎯 Quest in progress</div>';
-                        actionHtml = `<button class="action-btn complete-quest" onclick="completeQuest(${chore.id}, '${child}')">Complete Quest!</button>`;
-                    } else {
-                        statusHtml = '<div class="quest-status">📜 Available</div>';
-                        actionHtml = `<button class="action-btn start-quest" onclick="startQuest(${chore.id}, '${child}')">Start Quest</button>`;
-                    }
-                    
-                    const difficultyStars = '★'.repeat(chore.points) + '☆'.repeat(5 - chore.points);
-                    const questType = chore.frequency === 'daily' ? 'daily-quest' : 
-                                    chore.frequency === 'weekly' ? 'weekly-quest' : 'monthly-quest';
-                    
-                    html += `
-                        <div class="quest-item ${questType}">
-                            <div class="quest-header">
-                                <div class="quest-name">${chore.name}</div>
-                                <div class="quest-difficulty">
-                                    <span class="difficulty-star">${difficultyStars}</span>
-                                </div>
-                            </div>
-                            <div class="quest-reward">
-                                <span>Reward:</span>
-                                <span class="reward-coins">${chore.points} ⭐</span>
-                                <span>${chore.frequency} quest</span>
-                            </div>
-                            <div class="quest-actions">
-                                ${statusHtml}
-                                ${actionHtml}
-                            </div>
-                        </div>
-                    `;
-                });
+        
+        function updateAdminDisplay() {
+            const container = document.getElementById('admin-chores');
+            if (!container) return;
+            
+            let html = '';
+            gameData.chores.forEach(chore => {
+                const assignedNames = [];
+                if (chore.assignedTo) {
+                    if (chore.assignedTo.includes('child1')) assignedNames.push('Harry');
+                    if (chore.assignedTo.includes('child2')) assignedNames.push('Princess');
+                }
+                const assignedText = assignedNames.length > 0 ? assignedNames.join(', ') : 'Unassigned';
                 
-                container.innerHTML = html;
+                html += `
+                    <div class="quest-item">
+                        <div class="quest-header">
+                            <div class="quest-name">${chore.name}</div>
+                            <div>${chore.points} ⭐ - ${chore.frequency}</div>
+                        </div>
+                        <div class="quest-reward">
+                            <span>Assigned to: <strong>${assignedText}</strong></span>
+                        </div>
+                        <div class="quest-actions">
+                            <button class="add-btn" onclick="editAssignment(${chore.id})" style="padding: 5px 10px; margin-right: 10px;">Edit</button>
+                            <button class="delete-btn" onclick="deleteChore(${chore.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
             });
+            
+            container.innerHTML = html;
         }
         
-        // Start a quest
+        function updatePendingApprovals() {
+            const container = document.getElementById('pending-approvals');
+            if (!container) return;
+            
+            let html = '';
+            ['child1', 'child2'].forEach(child => {
+                const player = gameData.players[child];
+                player.pendingChores.forEach(choreId => {
+                    const chore = gameData.chores.find(c => c.id === choreId);
+                    if (chore) {
+                        html += `
+                            <div class="quest-item">
+                                <div class="quest-header">
+                                    <div class="quest-name">${player.name}: ${chore.name}</div>
+                                    <div>${chore.points} ⭐</div>
+                                </div>
+                                <div class="quest-actions">
+                                    <button class="action-btn complete-quest" onclick="approveChore(${choreId}, '${child}')">Approve</button>
+                                    <button class="action-btn" onclick="rejectChore(${choreId}, '${child}')" style="background: #e53e3e;">Reject</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            });
+            
+            if (html === '') {
+                html = '<p style="color: #718096; text-align: center; padding: 20px; font-style: italic;">No quests awaiting approval</p>';
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        // Quest actions
         function startQuest(choreId, child) {
             const player = gameData.players[child];
             if (!player.activeQuests.includes(choreId)) {
                 player.activeQuests.push(choreId);
-                showAchievement(`Quest started! Time to begin your adventure! 🎯`);
+                showAchievement('Quest started! Time to begin your adventure! 🎯');
                 updateDisplay();
             }
         }
         
-        // Complete a quest
         function completeQuest(choreId, child) {
             const chore = gameData.chores.find(c => c.id === choreId);
             if (!chore) return;
             
-            // Show mini-game before completion
             showMiniGame(choreId, child, chore);
         }
         
-        // Show mini-game
         function showMiniGame(choreId, child, chore) {
-            const modal = document.getElementById('miniGameModal');
-            const title = document.getElementById('miniGameTitle');
-            const content = document.getElementById('miniGameContent');
+            const modal = document.getElementById('gameModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
             
-            const challenges = miniGameChallenges[child];
-            if (!challenges) {
-                // Fallback for unknown child
-                skipMiniGame(choreId, child);
+            const childChallenges = challenges[child];
+            if (!childChallenges) {
+                finishQuest(choreId, child, false);
                 return;
             }
             
-            // Choose random challenge type based on child
-            let challengeTypes, selectedChallenge, challengeType;
+            let challengeType, selectedChallenge;
             
             if (child === 'child1') {
-                challengeTypes = ['math', 'riddles', 'spells', 'memory'];
-                challengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+                challengeType = Math.random() < 0.5 ? 'math' : 'riddles';
+                selectedChallenge = childChallenges[challengeType][Math.floor(Math.random() * childChallenges[challengeType].length)];
                 
-                if (challengeType === 'memory') {
-                    selectedChallenge = challenges[challengeType][Math.floor(Math.random() * challenges[challengeType].length)];
-                    showMemoryGame(selectedChallenge, choreId, child, chore);
-                    return;
-                }
+                title.textContent = challengeType === 'math' ? '🧮 Mathematical Challenge' : '🧩 Riddle Challenge';
+                
+                content.innerHTML = `
+                    <p style="font-size: 1.1em; margin-bottom: 15px;">${selectedChallenge.question}</p>
+                    <input type="text" class="modal-input" id="challengeInput" placeholder="Your answer..." style="text-transform: uppercase;">
+                    <br>
+                    <button class="modal-btn" onclick="checkAnswer('${selectedChallenge.answer.toUpperCase()}', ${choreId}, '${child}')">Submit Answer!</button>
+                    <button class="modal-btn" onclick="skipChallenge(${choreId}, '${child}')" style="background: #718096;">Skip</button>
+                    <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                `;
             } else {
-                challengeTypes = ['spelling', 'counting', 'easy_math', 'easy_questions'];
-                challengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)];
+                challengeType = Math.random() < 0.5 ? 'spelling' : 'counting';
+                selectedChallenge = childChallenges[challengeType][Math.floor(Math.random() * childChallenges[challengeType].length)];
                 
                 if (challengeType === 'spelling') {
-                    selectedChallenge = challenges[challengeType][Math.floor(Math.random() * challenges[challengeType].length)];
-                    showSpellingGame(selectedChallenge, choreId, child, chore);
-                    return;
+                    title.textContent = '✨ Spelling Magic Challenge';
+                    content.innerHTML = `
+                        <p style="font-size: 1.1em; margin-bottom: 15px;">${selectedChallenge.question}</p>
+                        <div style="font-size: 2em; padding: 20px; background: #ffecf5; border-radius: 10px; margin: 20px 0; color: #d63384; font-weight: bold; letter-spacing: 4px;">
+                            ${selectedChallenge.display}
+                        </div>
+                        <p style="margin-bottom: 10px;">Now you spell it:</p>
+                        <input type="text" class="modal-input" id="challengeInput" placeholder="Type the word..." style="text-transform: uppercase;">
+                        <br>
+                        <button class="modal-btn" onclick="checkAnswer('${selectedChallenge.word}', ${choreId}, '${child}')">Cast Spelling Magic!</button>
+                        <button class="modal-btn" onclick="skipChallenge(${choreId}, '${child}')" style="background: #718096;">Skip</button>
+                        <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    `;
+                } else {
+                    title.textContent = '🔢 Counting Challenge';
+                    content.innerHTML = `
+                        <p style="font-size: 1.1em; margin-bottom: 15px;">${selectedChallenge.question}</p>
+                        <input type="text" class="modal-input" id="challengeInput" placeholder="Your answer...">
+                        <br>
+                        <button class="modal-btn" onclick="checkAnswer('${selectedChallenge.answer}', ${choreId}, '${child}')">Submit Answer!</button>
+                        <button class="modal-btn" onclick="skipChallenge(${choreId}, '${child}')" style="background: #718096;">Skip</button>
+                        <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
+                    `;
                 }
             }
             
-            selectedChallenge = challenges[challengeType][Math.floor(Math.random() * challenges[challengeType].length)];
-            
-            const challengeIcons = {
-                math: '🧮',
-                riddles: '🧩', 
-                spells: '⚡',
-                spelling: '✨',
-                counting: '🔢',
-                easy_math: '➕',
-                easy_questions: '🌈'
-            };
-            
-            const challengeTitles = {
-                math: 'Mathematical Challenge',
-                riddles: 'Riddle Challenge',
-                spells: 'Spell Challenge',
-                spelling: 'Spelling Magic',
-                counting: 'Counting Challenge',
-                easy_math: 'Princess Math',
-                easy_questions: 'Royal Questions'
-            };
-            
-            title.textContent = `${challengeIcons[challengeType]} ${challengeTitles[challengeType]}`;
-            
-            let hintHtml = '';
-            if (selectedChallenge.hint) {
-                hintHtml = `<div style="margin: 10px 0; font-size: 0.9em; color: #666; font-style: italic;">💡 Hint: ${selectedChallenge.hint}</div>`;
-            }
-            
-            content.innerHTML = `
-                <div class="challenge-game">
-                    <p style="font-size: 1.1em; margin-bottom: 15px; line-height: 1.4;">${selectedChallenge.question}</p>
-                    ${hintHtml}
-                    <input type="text" class="spell-input" id="challengeInput" placeholder="Your answer..." style="text-transform: uppercase;">
-                    <br>
-                    <button class="mini-game-btn" onclick="checkChallenge('${selectedChallenge.answer.toUpperCase()}', ${choreId}, '${child}', '${challengeType}')">Submit Answer!</button>
-                    <button class="mini-game-btn" onclick="skipMiniGame(${choreId}, '${child}')" style="background: #718096;">Skip Challenge</button>
-                    <div id="challenge-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-                </div>
-            `;
-            
             modal.style.display = 'flex';
-            
-            // Focus on input and auto-uppercase
             setTimeout(() => {
                 const input = document.getElementById('challengeInput');
                 input.focus();
-                
-                // Auto-uppercase as they type
-                input.addEventListener('input', function(e) {
-                    this.value = this.value.toUpperCase();
-                });
-                
-                // Allow Enter key to submit
                 input.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
-                        checkChallenge(selectedChallenge.answer.toUpperCase(), choreId, child, challengeType);
+                        checkAnswer(selectedChallenge.answer || selectedChallenge.word, choreId, child);
                     }
                 });
             }, 100);
         }
         
-        // Show memory game
-        function showMemoryGame(challenge, choreId, child, chore) {
-            const modal = document.getElementById('miniGameModal');
-            const title = document.getElementById('miniGameTitle');
-            const content = document.getElementById('miniGameContent');
-            
-            title.textContent = '🧠 Memory Challenge';
-            
-            content.innerHTML = `
-                <div class="memory-game">
-                    <p style="font-size: 1.1em; margin-bottom: 15px;">${challenge.question}</p>
-                    <div id="memory-display" style="font-size: 1.5em; padding: 20px; background: #f0f8ff; border-radius: 10px; margin: 20px 0; min-height: 60px; display: flex; align-items: center; justify-content: center;">
-                        ${challenge.display}
-                    </div>
-                    <div id="memory-input-area" style="display: none;">
-                        <p>Now type them back in order (separated by spaces):</p>
-                        <input type="text" class="spell-input" id="memoryInput" placeholder="Type the sequence..." style="text-transform: uppercase;">
-                        <br>
-                        <button class="mini-game-btn" onclick="checkMemoryChallenge('${challenge.sequence.join(' ')}', ${choreId}, '${child}')">Check Memory!</button>
-                        <button class="mini-game-btn" onclick="skipMiniGame(${choreId}, '${child}')" style="background: #718096;">Skip Challenge</button>
-                        <div id="memory-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-                    </div>
-                    <button class="mini-game-btn" id="memory-ready-btn" onclick="startMemoryInput()">I've Memorized It!</button>
-                </div>
-            `;
-            
-            modal.style.display = 'flex';
-        }
-        
-        // Show spelling game for Princess
-        function showSpellingGame(challenge, choreId, child, chore) {
-            const modal = document.getElementById('miniGameModal');
-            const title = document.getElementById('miniGameTitle');
-            const content = document.getElementById('miniGameContent');
-            
-            title.textContent = '✨ Spelling Magic Challenge';
-            
-            content.innerHTML = `
-                <div class="spelling-game">
-                    <p style="font-size: 1.1em; margin-bottom: 15px;">${challenge.question}</p>
-                    <div style="font-size: 2em; padding: 20px; background: #ffecf5; border-radius: 10px; margin: 20px 0; color: #d63384; font-weight: bold; letter-spacing: 4px;">
-                        ${challenge.display}
-                    </div>
-                    <p style="margin-bottom: 10px;">Now you spell it:</p>
-                    <input type="text" class="spell-input" id="spellingInput" placeholder="Type the word..." style="text-transform: uppercase;">
-                    <br>
-                    <button class="mini-game-btn" onclick="checkSpellingChallenge('${challenge.word}', ${choreId}, '${child}')">Cast Spelling Magic!</button>
-                    <button class="mini-game-btn" onclick="skipMiniGame(${choreId}, '${child}')" style="background: #718096;">Skip Challenge</button>
-                    <div id="spelling-feedback" style="margin-top: 15px; font-weight: bold;"></div>
-                </div>
-            `;
-            
-            modal.style.display = 'flex';
-            
-            setTimeout(() => {
-                const input = document.getElementById('spellingInput');
-                input.focus();
-                
-                input.addEventListener('input', function(e) {
-                    this.value = this.value.toUpperCase();
-                });
-                
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        checkSpellingChallenge(challenge.word, choreId, child);
-                    }
-                });
-            }, 100);
-        }
-        
-        // Check spelling challenge
-        function checkSpellingChallenge(correctWord, choreId, child) {
-            const input = document.getElementById('spellingInput');
-            const userAnswer = input.value.trim().toUpperCase();
-            const feedback = document.getElementById('spelling-feedback');
-            
-            if (userAnswer === correctWord) {
-                feedback.style.color = '#48bb78';
-                feedback.textContent = '✨ Perfect spelling! You are a spelling princess! 👑';
-                
-                setTimeout(() => {
-                    finishQuest(choreId, child, true);
-                }, 1500);
-            } else {
-                feedback.style.color = '#e53e3e';
-                feedback.textContent = '💖 Almost there! Try again, beautiful princess!';
-                input.style.borderColor = '#e53e3e';
-                input.value = '';
-                input.focus();
-                
-                setTimeout(() => {
-                    input.style.borderColor = '#e2e8f0';
-                }, 2000);
-            }
-        }
-            document.getElementById('memory-display').style.display = 'none';
-            document.getElementById('memory-ready-btn').style.display = 'none';
-            document.getElementById('memory-input-area').style.display = 'block';
-            
-            setTimeout(() => {
-                const input = document.getElementById('memoryInput');
-                input.focus();
-                
-                input.addEventListener('input', function(e) {
-                    this.value = this.value.toUpperCase();
-                });
-                
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        const correctAnswer = document.querySelector('button[onclick*="checkMemoryChallenge"]')
-                            .getAttribute('onclick').match(/'([^']+)'/)[1];
-                        checkMemoryChallenge(correctAnswer, 
-                            parseInt(document.querySelector('button[onclick*="checkMemoryChallenge"]')
-                                .getAttribute('onclick').match(/(\d+)/)[1]),
-                            document.querySelector('button[onclick*="checkMemoryChallenge"]')
-                                .getAttribute('onclick').match(/'child\d'/)[0].replace(/'/g, '')
-                        );
-                    }
-                });
-            }, 100);
-        }
-        
-        // Check memory challenge
-        function checkMemoryChallenge(correctSequence, choreId, child) {
-            const input = document.getElementById('memoryInput');
-            const userAnswer = input.value.trim().toUpperCase();
-            const feedback = document.getElementById('memory-feedback');
-            
-            if (userAnswer === correctSequence) {
-                feedback.style.color = '#48bb78';
-                feedback.textContent = '🎉 Perfect memory! Well done!';
-                
-                setTimeout(() => {
-                    finishQuest(choreId, child, true);
-                }, 1500);
-            } else {
-                feedback.style.color = '#e53e3e';
-                feedback.textContent = '❌ Not quite right. Try again!';
-                input.value = '';
-                input.focus();
-            }
-        }
-        
-        // Check challenge answer
-        function checkChallenge(correctAnswer, choreId, child, challengeType) {
+        function checkAnswer(correctAnswer, choreId, child) {
             const input = document.getElementById('challengeInput');
             const userAnswer = input.value.trim().toUpperCase();
             const feedback = document.getElementById('challenge-feedback');
             
-            if (userAnswer === correctAnswer) {
-                const successMessages = {
-                    math: '🧮 Excellent calculation!',
-                    riddles: '🧩 Brilliant deduction!',
-                    spells: '⚡ Spell cast perfectly!',
-                    spelling: '✨ Perfect spelling magic!',
-                    counting: '🔢 Wonderful counting!',
-                    easy_math: '➕ Amazing princess math!',
-                    easy_questions: '🌈 Royal knowledge!'
-                };
-                
+            if (userAnswer === correctAnswer.toUpperCase()) {
                 feedback.style.color = '#48bb78';
-                feedback.textContent = successMessages[challengeType] || '🎉 Correct!';
+                feedback.textContent = child === 'child1' ? '🎉 Excellent work!' : '✨ Perfect! You are amazing! 👑';
                 
                 setTimeout(() => {
                     finishQuest(choreId, child, true);
                 }, 1500);
             } else {
                 feedback.style.color = '#e53e3e';
-                feedback.textContent = '❌ Not quite right. Try again!';
-                input.style.borderColor = '#e53e3e';
+                feedback.textContent = child === 'child1' ? '❌ Not quite right. Try again!' : '💖 Almost there! Try again, beautiful princess!';
                 input.value = '';
                 input.focus();
-                
-                // Reset border color after 2 seconds
-                setTimeout(() => {
-                    input.style.borderColor = '#e2e8f0';
-                }, 2000);
             }
         }
         
-        // Skip mini-game
-        function skipMiniGame(choreId, child) {
+        function skipChallenge(choreId, child) {
             finishQuest(choreId, child, false);
         }
         
-        // Finish quest (with or without mini-game bonus)
-        function finishQuest(choreId, child, miniGameSuccess) {
+        function finishQuest(choreId, child, success) {
             const player = gameData.players[child];
             
-            // Remove from active quests and add to pending
             player.activeQuests = player.activeQuests.filter(id => id !== choreId);
             if (!player.pendingChores.includes(choreId)) {
                 player.pendingChores.push(choreId);
             }
             
-            closeMiniGame();
+            closeModal();
             
-            const bonusText = miniGameSuccess ? " You solved the challenge and earned a bonus! 🌟" : "";
+            const bonusText = success ? " You solved the challenge perfectly! 🌟" : "";
             showAchievement(`Quest submitted for approval!${bonusText}`);
             
             updateDisplay();
         }
         
-        // Close mini-game
-        function closeMiniGame() {
-            document.getElementById('miniGameModal').style.display = 'none';
-        }
-        
-        // Approve a quest (parent function)
+        // Parent functions
         function approveChore(choreId, child) {
             const player = gameData.players[child];
             const chore = gameData.chores.find(c => c.id === choreId);
@@ -1569,18 +999,16 @@
                 player.completedChores.push(choreId);
                 player.stars += chore.points;
                 
-                // Level up logic
                 const newLevel = Math.floor(player.stars / 5) + 1;
                 if (newLevel > player.level) {
                     player.level = newLevel;
                     showCelebration(`${player.name} leveled up to Level ${newLevel}! 🎉`);
                 }
                 
-                // Check for grand prize
                 if (player.stars >= gameData.starsTarget) {
-                    showGrandPrizeCelebration(player.name);
-                    player.stars = 0; // Reset stars after reaching target
-                    player.completedChores = []; // Reset completed chores
+                    showGrandPrize(player.name);
+                    player.stars = 0;
+                    player.completedChores = [];
                 }
                 
                 updateDisplay();
@@ -1588,81 +1016,12 @@
             }
         }
         
-        // Reject a quest
         function rejectChore(choreId, child) {
             const player = gameData.players[child];
             player.pendingChores = player.pendingChores.filter(id => id !== choreId);
             updateDisplay();
         }
         
-        // Show achievement notification
-        function showAchievement(text) {
-            const notification = document.getElementById('achievementNotification');
-            const textElement = document.getElementById('achievementText');
-            
-            textElement.textContent = text;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Show celebration
-        function showCelebration(text) {
-            const popup = document.getElementById('celebrationPopup');
-            const textElement = document.getElementById('celebrationText');
-            
-            textElement.textContent = text;
-            popup.classList.add('show');
-        }
-        
-        // Show grand prize celebration
-        function showGrandPrizeCelebration(playerName) {
-            const popup = document.getElementById('celebrationPopup');
-            const textElement = document.getElementById('celebrationText');
-            
-            textElement.innerHTML = `🎊 GRAND PRIZE WINNER! 🎊<br>${playerName} has earned ${gameData.starsTarget} stars!<br>Time to claim your amazing reward! 🎁`;
-            popup.classList.add('show');
-            
-            // Create extra celebration effects
-            createCelebrationFireworks();
-        }
-        
-        // Create celebration fireworks
-        function createCelebrationFireworks() {
-            const container = document.body;
-            const fireworks = ['🎆', '🎇', '✨', '🌟', '💫'];
-            
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.textContent = fireworks[Math.floor(Math.random() * fireworks.length)];
-                    firework.style.position = 'fixed';
-                    firework.style.left = Math.random() * 100 + '%';
-                    firework.style.top = Math.random() * 100 + '%';
-                    firework.style.fontSize = '2em';
-                    firework.style.zIndex = '2000';
-                    firework.style.animation = 'fireworkExplode 2s ease-out forwards';
-                    firework.style.pointerEvents = 'none';
-                    
-                    container.appendChild(firework);
-                    
-                    setTimeout(() => {
-                        if (firework.parentNode) {
-                            firework.parentNode.removeChild(firework);
-                        }
-                    }, 2000);
-                }, i * 100);
-            }
-        }
-        
-        // Close celebration
-        function closeCelebration() {
-            document.getElementById('celebrationPopup').classList.remove('show');
-        }
-        
-        // Add new chore
         function addChore() {
             const name = document.getElementById('newChoreName').value.trim();
             const points = parseInt(document.getElementById('newChorePoints').value);
@@ -1688,7 +1047,6 @@
                     assignedTo: assignedTo
                 });
                 
-                // Clear inputs
                 document.getElementById('newChoreName').value = '';
                 document.getElementById('newChorePoints').value = '1';
                 document.getElementById('newChoreFreq').value = 'daily';
@@ -1701,11 +1059,9 @@
             }
         }
         
-        // Delete chore
         function deleteChore(choreId) {
             gameData.chores = gameData.chores.filter(chore => chore.id !== choreId);
             
-            // Remove from all player lists
             ['child1', 'child2'].forEach(child => {
                 const player = gameData.players[child];
                 player.completedChores = player.completedChores.filter(id => id !== choreId);
@@ -1717,7 +1073,6 @@
             saveGameData();
         }
         
-        // Update stars target
         function updateStarsTarget() {
             const newTarget = parseInt(document.getElementById('starsTarget').value);
             if (newTarget > 0) {
@@ -1728,51 +1083,13 @@
             }
         }
         
-        // Update admin display
-        function updateAdminDisplay() {
-            const container = document.getElementById('admin-chores');
-            if (!container) return;
-            
-            let html = '';
-            
-            gameData.chores.forEach(chore => {
-                const assignedNames = [];
-                if (chore.assignedTo) {
-                    if (chore.assignedTo.includes('child1')) assignedNames.push('Harry');
-                    if (chore.assignedTo.includes('child2')) assignedNames.push('Princess');
-                }
-                const assignedText = assignedNames.length > 0 ? assignedNames.join(', ') : 'Unassigned';
-                
-                html += `
-                    <div class="quest-item">
-                        <div class="quest-header">
-                            <div class="quest-name">${chore.name}</div>
-                            <div class="quest-difficulty">
-                                <span>${chore.points} ⭐ - ${chore.frequency}</span>
-                            </div>
-                        </div>
-                        <div class="quest-reward">
-                            <span>Assigned to: <strong>${assignedText}</strong></span>
-                        </div>
-                        <div class="quest-actions">
-                            <button class="mini-game-btn" onclick="editChoreAssignment(${chore.id})" style="background: #4299e1; padding: 5px 10px; margin-right: 10px;">Edit Assignment</button>
-                            <button class="delete-btn" onclick="deleteChore(${chore.id})">Delete Quest</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        // Edit chore assignment
-        function editChoreAssignment(choreId) {
+        function editAssignment(choreId) {
             const chore = gameData.chores.find(c => c.id === choreId);
             if (!chore) return;
             
-            const modal = document.getElementById('miniGameModal');
-            const title = document.getElementById('miniGameTitle');
-            const content = document.getElementById('miniGameContent');
+            const modal = document.getElementById('gameModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
             
             title.textContent = '👥 Edit Quest Assignment';
             
@@ -1780,39 +1097,25 @@
             const isAssignedToChild2 = chore.assignedTo && chore.assignedTo.includes('child2');
             
             content.innerHTML = `
-                <div class="assignment-editor">
-                    <p style="font-size: 1.1em; margin-bottom: 20px;">Quest: <strong>${chore.name}</strong></p>
-                    <p style="margin-bottom: 20px;">Choose which children should see this quest:</p>
-                    
-                    <div style="text-align: left; margin: 20px 0;">
-                        <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
-                            <input type="checkbox" id="editAssignChild1" ${isAssignedToChild1 ? 'checked' : ''}> 
-                            ⚡ Harry (Wizard Theme)
-                        </label>
-                        <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
-                            <input type="checkbox" id="editAssignChild2" ${isAssignedToChild2 ? 'checked' : ''}> 
-                            🦄 Princess (Royal Theme)
-                        </label>
-                    </div>
-                    
-                    <div style="margin: 20px 0; padding: 15px; background: #f0f8ff; border-radius: 10px; font-size: 0.9em;">
-                        <strong>Preview:</strong><br>
-                        <div style="margin-top: 10px;">
-                            <strong>Harry sees:</strong> "${getThemedChoreName(chore.name, 'child1')}"<br>
-                            <strong>Princess sees:</strong> "${getThemedChoreName(chore.name, 'child2')}"
-                        </div>
-                    </div>
-                    
-                    <button class="mini-game-btn" onclick="saveChoreAssignment(${choreId})">Save Assignment</button>
-                    <button class="mini-game-btn" onclick="closeMiniGame()" style="background: #718096;">Cancel</button>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">Quest: <strong>${chore.name}</strong></p>
+                <div style="text-align: left; margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
+                        <input type="checkbox" id="editAssignChild1" ${isAssignedToChild1 ? 'checked' : ''}> 
+                        ⚡ Harry (Wizard Theme)
+                    </label>
+                    <label style="display: block; margin-bottom: 15px; font-size: 1.1em;">
+                        <input type="checkbox" id="editAssignChild2" ${isAssignedToChild2 ? 'checked' : ''}> 
+                        🦄 Princess (Royal Theme)
+                    </label>
                 </div>
+                <button class="modal-btn" onclick="saveAssignment(${choreId})">Save Assignment</button>
+                <button class="modal-btn" onclick="closeModal()" style="background: #718096;">Cancel</button>
             `;
             
             modal.style.display = 'flex';
         }
         
-        // Save chore assignment
-        function saveChoreAssignment(choreId) {
+        function saveAssignment(choreId) {
             const chore = gameData.chores.find(c => c.id === choreId);
             if (!chore) return;
             
@@ -1823,67 +1126,63 @@
             if (assignChild1) chore.assignedTo.push('child1');
             if (assignChild2) chore.assignedTo.push('child2');
             
-            closeMiniGame();
+            closeModal();
             updateDisplay();
             saveGameData();
             showAchievement('Quest assignment updated! 👥');
         }
         
-        // Update pending approvals
-        function updatePendingApprovals() {
-            const container = document.getElementById('pending-approvals');
-            if (!container) return;
-            
-            let html = '';
-            
-            ['child1', 'child2'].forEach(child => {
-                const player = gameData.players[child];
-                player.pendingChores.forEach(choreId => {
-                    const chore = gameData.chores.find(c => c.id === choreId);
-                    if (chore) {
-                        html += `
-                            <div class="quest-item">
-                                <div class="quest-header">
-                                    <div class="quest-name">${player.name}: ${chore.name}</div>
-                                    <div class="quest-difficulty">
-                                        <span>${chore.points} ⭐</span>
-                                    </div>
-                                </div>
-                                <div class="quest-actions">
-                                    <button class="action-btn complete-quest" onclick="approveChore(${choreId}, '${child}')">Approve Quest</button>
-                                    <button class="action-btn" onclick="rejectChore(${choreId}, '${child}')" style="background: #e53e3e;">Reject</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-            });
-            
-            if (html === '') {
-                html = '<p style="color: #718096; text-align: center; padding: 20px; font-style: italic;">No quests awaiting approval</p>';
-            }
-            
-            container.innerHTML = html;
+        // Utility functions
+        function closeModal() {
+            document.getElementById('gameModal').style.display = 'none';
         }
         
-        // Save game data to localStorage (if available)
+        function showAchievement(text) {
+            const notification = document.getElementById('achievementNotification');
+            const textElement = document.getElementById('achievementText');
+            
+            textElement.textContent = text;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        function showCelebration(text) {
+            const popup = document.getElementById('celebrationPopup');
+            const textElement = document.getElementById('celebrationText');
+            
+            textElement.textContent = text;
+            popup.classList.add('show');
+        }
+        
+        function showGrandPrize(playerName) {
+            const popup = document.getElementById('celebrationPopup');
+            const textElement = document.getElementById('celebrationText');
+            
+            textElement.innerHTML = `🎊 GRAND PRIZE WINNER! 🎊<br>${playerName} has earned ${gameData.starsTarget} stars!<br>Time to claim your amazing reward! 🎁`;
+            popup.classList.add('show');
+        }
+        
+        function closeCelebration() {
+            document.getElementById('celebrationPopup').classList.remove('show');
+        }
+        
         function saveGameData() {
             try {
-                // Using a simple variable to store data during the session
                 window.choreGameData = JSON.stringify(gameData);
             } catch (e) {
                 console.log('Could not save game data');
             }
         }
         
-        // Load game data from localStorage (if available)
         function loadGameData() {
             try {
                 if (window.choreGameData) {
                     const savedData = JSON.parse(window.choreGameData);
                     gameData = { ...gameData, ...savedData };
                     
-                    // Update nextChoreId to avoid conflicts
                     if (gameData.chores.length > 0) {
                         nextChoreId = Math.max(...gameData.chores.map(c => c.id)) + 1;
                     }
@@ -1893,28 +1192,16 @@
             }
         }
         
-        // Add CSS for firework animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fireworkExplode {
-                0% { 
-                    transform: scale(0); 
-                    opacity: 1; 
-                }
-                50% { 
-                    transform: scale(1.5); 
-                    opacity: 1; 
-                }
-                100% { 
-                    transform: scale(0.5); 
-                    opacity: 0; 
-                }
-            }
-        `;
-        document.head.appendChild(style);
+        // Initialize
+        function init() {
+            loadGameData();
+            switchMode('child1');
+            updateDisplay();
+            setInterval(saveGameData, 30000);
+        }
         
-        // Initialize game on load
-        initGame();
+        // Start the game
+        init();
     </script>
 </body>
 </html>
