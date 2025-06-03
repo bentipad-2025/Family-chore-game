@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Chore Adventure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 2.5em;
+            color: #4a5568;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #718096;
+        }
+        
+        .game-modes {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .mode-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .mode-btn.active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .parent-mode { background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; }
+        .child1-mode { background: linear-gradient(45deg, #1e3c72, #2a5298); color: white; }
+        .child2-mode { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #333; }
+        
+        .player-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .player-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .player-header {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .player1-theme {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+        }
+        
+        .player2-theme {
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            color: #333;
+        }
+        
+        .player-name {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .star-progress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .stars {
+            font-size: 2em;
+        }
+        
+        .star {
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .star.empty {
+            color: #ddd;
+        }
+        
+        .progress-text {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .chores-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chore-category {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .category-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+        
+        .daily { border-left: 5px solid #48bb78; }
+        .weekly { border-left: 5px solid #ed8936; }
+        .monthly { border-left: 5px solid #9f7aea; }
+        
+        .chore-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f7fafc;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .chore-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .chore-info {
+            flex: 1;
+        }
+        
+        .chore-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .chore-points {
+            font-size: 0.9em;
+            color: #718096;
+        }
+        
+        .chore-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .pending { background: #fed7d7; color: #c53030; }
+        .approved { background: #c6f6d5; color: #22543d; }
+        .available { background: #bee3f8; color: #2c5282; }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .complete-btn {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .approve-btn {
+            background: #38a169;
+            color: white;
+        }
+        
+        .reject-btn {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .admin-section {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .input-group input, .input-group select {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+        
+        .add-btn {
+            background: #4299e1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .delete-btn {
+            background: #e53e3e;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        
+        .settings-section {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .celebration.show {
+            display: block;
+            animation: celebrationPop 0.5s ease-out;
+        }
+        
+        @keyframes celebrationPop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🌟 Family Chore Adventure 🌟</h1>
+            <p class="subtitle">Complete chores, earn stars, and win amazing prizes!</p>
+        </div>
+        
+        <div class="game-modes">
+            <button class="mode-btn parent-mode" onclick="switchMode('parent')">👨‍👩‍👧‍👦 Parent Mode</button>
+            <button class="mode-btn child1-mode" onclick="switchMode('child1')">⚡ Harry's Quest</button>
+            <button class="mode-btn child2-mode" onclick="switchMode('child2')">🦄 Princess Adventure</button>
+        </div>
+        
+        <!-- Parent Mode -->
+        <div id="parent-section" class="player-section">
+            <div class="settings-section">
+                <h2 class="admin-title">⚙️ Game Settings</h2>
+                <div class="input-group">
+                    <label>Stars needed for reward:</label>
+                    <input type="number" id="starsTarget" value="10" min="1" max="50">
+                    <button class="add-btn" onclick="updateStarsTarget()">Update</button>
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h2 class="admin-title">➕ Add New Chore</h2>
+                <div class="input-group">
+                    <input type="text" id="newChoreName" placeholder="Chore name">
+                    <input type="number" id="newChorePoints" placeholder="Points" min="1" max="10" value="1">
+                    <select id="newChoreFreq">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                    <button class="add-btn" onclick="addChore()">Add Chore</button>
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h2 class="admin-title">📋 Manage Chores</h2>
+                <div id="admin-chores"></div>
+            </div>
+            
+            <div class="admin-section">
+                <h2 class="admin-title">✅ Pending Approvals</h2>
+                <div id="pending-approvals"></div>
+            </div>
+        </div>
+        
+        <!-- Child 1 Mode -->
+        <div id="child1-section" class="player-section">
+            <div class="player-header player1-theme">
+                <h2 class="player-name">⚡ Harry's Magical Quest ⚡</h2>
+                <div class="star-progress">
+                    <div class="stars" id="child1-stars"></div>
+                    <div class="progress-text" id="child1-progress"></div>
+                </div>
+            </div>
+            <div class="chores-container" id="child1-chores"></div>
+        </div>
+        
+        <!-- Child 2 Mode -->
+        <div id="child2-section" class="player-section">
+            <div class="player-header player2-theme">
+                <h2 class="player-name">🦄 Princess Unicorn Adventure 🦄</h2>
+                <div class="star-progress">
+                    <div class="stars" id="child2-stars"></div>
+                    <div class="progress-text" id="child2-progress"></div>
+                </div>
+            </div>
+            <div class="chores-container" id="child2-chores"></div>
+        </div>
+    </div>
+    
+    <!-- Celebration Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="celebration" id="celebration">
+        <h2>🎉 CONGRATULATIONS! 🎉</h2>
+        <p id="celebration-text"></p>
+        <div style="font-size: 3em; margin: 20px 0;">🌟✨🎊</div>
+        <button class="add-btn" onclick="closeCelebration()">Awesome!</button>
+    </div>
+    
+    <script>
+        // Game data
+        let gameData = {
+            starsTarget: 10,
+            chores: [
+                { id: 1, name: "Make bed", points: 2, frequency: "daily" },
+                { id: 2, name: "Put away toys", points: 1, frequency: "daily" },
+                { id: 3, name: "Clean room", points: 3, frequency: "weekly" },
+                { id: 4, name: "Put away clothes", points: 2, frequency: "daily" },
+                { id: 5, name: "Organise shoe cupboard", points: 4, frequency: "monthly" }
+            ],
+            players: {
+                child1: { name: "Harry", stars: 0, completedChores: [], pendingChores: [] },
+                child2: { name: "Princess", stars: 0, completedChores: [], pendingChores: [] }
+            }
+        };
+        
+        let currentMode = 'parent';
+        let nextChoreId = 6;
+        
+        // Initialize game
+        function initGame() {
+            switchMode('parent');
+            updateDisplay();
+        }
+        
+        // Switch between modes
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.${mode}-mode`).classList.add('active');
+            
+            // Show appropriate section
+            document.querySelectorAll('.player-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(`${mode}-section`).classList.add('active');
+            
+            updateDisplay();
+        }
+        
+        // Update all displays
+        function updateDisplay() {
+            updateStarsDisplay();
+            updateChoresDisplay();
+            updateAdminDisplay();
+            updatePendingApprovals();
+        }
+        
+        // Update stars display
+        function updateStarsDisplay() {
+            ['child1', 'child2'].forEach(child => {
+                const player = gameData.players[child];
+                const starsContainer = document.getElementById(`${child}-stars`);
+                const progressContainer = document.getElementById(`${child}-progress`);
+                
+                let starsHtml = '';
+                for (let i = 0; i < gameData.starsTarget; i++) {
+                    starsHtml += `<span class="star ${i < player.stars ? '' : 'empty'}">★</span>`;
+                }
+                starsContainer.innerHTML = starsHtml;
+                progressContainer.innerHTML = `${player.stars}/${gameData.starsTarget} stars`;
+            });
+        }
+        
+        // Update chores display for children
+        function updateChoresDisplay() {
+            ['child1', 'child2'].forEach(child => {
+                const container = document.getElementById(`${child}-chores`);
+                const player = gameData.players[child];
+                
+                const categories = { daily: [], weekly: [], monthly: [] };
+                
+                gameData.chores.forEach(chore => {
+                    const isCompleted = player.completedChores.includes(chore.id);
+                    const isPending = player.pendingChores.includes(chore.id);
+                    
+                    let status = 'available';
+                    let statusText = 'Ready';
+                    let buttonHtml = `<button class="action-btn complete-btn" onclick="completeChore(${chore.id}, '${child}')">Complete!</button>`;
+                    
+                    if (isPending) {
+                        status = 'pending';
+                        statusText = 'Waiting for approval';
+                        buttonHtml = '<span style="color: #718096;">Pending...</span>';
+                    } else if (isCompleted) {
+                        status = 'approved';
+                        statusText = 'Completed!';
+                        buttonHtml = '<span style="color: #22543d;">✓ Done!</span>';
+                    }
+                    
+                    categories[chore.frequency].push(`
+                        <div class="chore-item">
+                            <div class="chore-info">
+                                <div class="chore-name">${chore.name}</div>
+                                <div class="chore-points">${chore.points} star${chore.points > 1 ? 's' : ''}</div>
+                            </div>
+                            <div class="chore-status">
+                                <span class="status-badge ${status}">${statusText}</span>
+                                ${buttonHtml}
+                            </div>
+                        </div>
+                    `);
+                });
+                
+                let html = '';
+                Object.keys(categories).forEach(freq => {
+                    if (categories[freq].length > 0) {
+                        const freqTitle = freq.charAt(0).toUpperCase() + freq.slice(1) + ' Chores';
+                        html += `
+                            <div class="chore-category ${freq}">
+                                <div class="category-title">${freqTitle}</div>
+                                ${categories[freq].join('')}
+                            </div>
+                        `;
+                    }
+                });
+                
+                container.innerHTML = html;
+            });
+        }
+        
+        // Update admin display
+        function updateAdminDisplay() {
+            const container = document.getElementById('admin-chores');
+            let html = '';
+            
+            gameData.chores.forEach(chore => {
+                html += `
+                    <div class="chore-item">
+                        <div class="chore-info">
+                            <div class="chore-name">${chore.name}</div>
+                            <div class="chore-points">${chore.points} star${chore.points > 1 ? 's' : ''} - ${chore.frequency}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteChore(${chore.id})">Delete</button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Update pending approvals
+        function updatePendingApprovals() {
+            const container = document.getElementById('pending-approvals');
+            let html = '';
+            
+            ['child1', 'child2'].forEach(child => {
+                const player = gameData.players[child];
+                player.pendingChores.forEach(choreId => {
+                    const chore = gameData.chores.find(c => c.id === choreId);
+                    if (chore) {
+                        html += `
+                            <div class="chore-item">
+                                <div class="chore-info">
+                                    <div class="chore-name">${player.name}: ${chore.name}</div>
+                                    <div class="chore-points">${chore.points} star${chore.points > 1 ? 's' : ''}</div>
+                                </div>
+                                <div class="chore-status">
+                                    <button class="action-btn approve-btn" onclick="approveChore(${choreId}, '${child}')">Approve</button>
+                                    <button class="action-btn reject-btn" onclick="rejectChore(${choreId}, '${child}')">Reject</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            });
+            
+            if (html === '') {
+                html = '<p style="color: #718096; text-align: center; padding: 20px;">No pending approvals</p>';
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        // Complete a chore
+        function completeChore(choreId, child) {
+            const player = gameData.players[child];
+            if (!player.pendingChores.includes(choreId) && !player.completedChores.includes(choreId)) {
+                player.pendingChores.push(choreId);
+                updateDisplay();
+            }
+        }
+        
+        // Approve a chore
+        function approveChore(choreId, child) {
+            const player = gameData.players[child];
+            const chore = gameData.chores.find(c => c.id === choreId);
+            
+            if (chore && player.pendingChores.includes(choreId)) {
+                player.pendingChores = player.pendingChores.filter(id => id !== choreId);
+                player.completedChores.push(choreId);
+                player.stars += chore.points;
+                
+                // Check for celebration
+                if (player.stars >= gameData.starsTarget) {
+                    showCelebration(player.name);
+                    player.stars = 0; // Reset stars after reaching target
+                    player.completedChores = []; // Reset completed chores
+                }
+                
+                updateDisplay();
+            }
+        }
+        
+        // Reject a chore
+        function rejectChore(choreId, child) {
+            const player = gameData.players[child];
+            player.pendingChores = player.pendingChores.filter(id => id !== choreId);
+            updateDisplay();
+        }
+        
+        // Add new chore
+        function addChore() {
+            const name = document.getElementById('newChoreName').value.trim();
+            const points = parseInt(document.getElementById('newChorePoints').value);
+            const frequency = document.getElementById('newChoreFreq').value;
+            
+            if (name && points) {
+                gameData.chores.push({
+                    id: nextChoreId++,
+                    name: name,
+                    points: points,
+                    frequency: frequency
+                });
+                
+                // Clear inputs
+                document.getElementById('newChoreName').value = '';
+                document.getElementById('newChorePoints').value = '1';
+                document.getElementById('newChoreFreq').value = 'daily';
+                
+                updateDisplay();
+            }
+        }
+        
+        // Delete chore
+        function deleteChore(choreId) {
+            gameData.chores = gameData.chores.filter(chore => chore.id !== choreId);
+            
+            // Remove from all player lists
+            ['child1', 'child2'].forEach(child => {
+                const player = gameData.players[child];
+                player.completedChores = player.completedChores.filter(id => id !== choreId);
+                player.pendingChores = player.pendingChores.filter(id => id !== choreId);
+            });
+            
+            updateDisplay();
+        }
+        
+        // Update stars target
+        function updateStarsTarget() {
+            const newTarget = parseInt(document.getElementById('starsTarget').value);
+            if (newTarget > 0) {
+                gameData.starsTarget = newTarget;
+                updateDisplay();
+            }
+        }
+        
+        // Show celebration
+        function showCelebration(playerName) {
+            document.getElementById('celebration-text').innerHTML = 
+                `${playerName} has earned ${gameData.starsTarget} stars!<br>Time to claim your amazing reward! 🎁`;
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('celebration').classList.add('show');
+        }
+        
+        // Close celebration
+        function closeCelebration() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('celebration').classList.remove('show');
+        }
+        
+        // Initialize game on load
+        initGame();
+    </script>
+</body>
+</html>
