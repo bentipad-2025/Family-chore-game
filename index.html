@@ -913,4 +913,50 @@ function showAchievement(text) {
     var n = document.getElementById("achievementNotification");
     document.getElementById("achievementText").textContent = text;
     n.classList.add("show");
-    setTimeout(function() { n.classList.rem
+    setTimeout(function() { n.classList.remove("show"); }, 3000);
+}
+
+function showCelebration(text) {
+    document.getElementById("celebrationText").textContent = text;
+    document.getElementById("celebrationPopup").classList.add("show");
+}
+
+function closeCelebration() {
+    document.getElementById("celebrationPopup").classList.remove("show");
+}
+
+// ================= SAVE / LOAD =================
+function saveGameData() {
+    try {
+        localStorage.setItem("choreAdventureData", JSON.stringify(gameData));
+    } catch (e) {}
+}
+
+function loadGameData() {
+    try {
+        var saved = localStorage.getItem("choreAdventureData");
+        if (saved) {
+            var data = JSON.parse(saved);
+            for (var key in data) {
+                gameData[key] = data[key];
+            }
+            var maxId = 5;
+            for (var i = 0; i < gameData.chores.length; i++) {
+                if (gameData.chores[i].id > maxId) maxId = gameData.chores[i].id;
+            }
+            nextChoreId = maxId + 1;
+        }
+    } catch (e) {}
+}
+
+// ================= INIT =================
+function init() {
+    loadGameData();
+    checkAndResetChores();
+    switchMode("child1");
+}
+
+init();
+</script>
+</body>
+</html>
