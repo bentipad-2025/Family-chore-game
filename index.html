@@ -6,46 +6,55 @@
 <title>Family Chore Adventure</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 10px; }
-.container { max-width: 1200px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 10px; overflow-x: hidden; }
+.container { max-width: 1200px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; z-index: 2; }
 .header { text-align: center; margin-bottom: 30px; }
-.title { font-size: 2.2em; color: #4a5568; margin-bottom: 10px; }
+.title { font-size: 2.2em; color: #4a5568; margin-bottom: 10px; animation: glow 2s ease-in-out infinite alternate; }
+@keyframes glow { from { text-shadow: 0 0 8px rgba(255,215,0,0.3); } to { text-shadow: 0 0 22px rgba(255,215,0,0.8); } }
 .subtitle { font-size: 1.1em; color: #718096; }
-.game-modes { display: flex; gap: 15px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap; }
-.mode-btn { padding: 15px 25px; border: none; border-radius: 15px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-.mode-btn.active { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+.game-modes { display: flex; gap: 12px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap; }
+.mode-btn { padding: 14px 22px; border: none; border-radius: 15px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.mode-btn:hover { transform: translateY(-3px) scale(1.03); }
+.mode-btn.active { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); outline: 3px solid rgba(255,255,255,0.7); }
 .parent-mode { background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; }
 .child1-mode { background: linear-gradient(45deg, #1e3c72, #2a5298); color: white; }
 .child2-mode { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #333; }
+.leaderboard-mode { background: linear-gradient(45deg, #f6ad55, #ffd700); color: #4a2c00; }
 .player-section { display: none; }
-.player-section.active { display: block; }
-.adventure-map { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 30px; margin-bottom: 30px; text-align: center; color: white; }
+.player-section.active { display: block; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.adventure-map { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 30px; margin-bottom: 30px; text-align: center; color: white; position: relative; overflow: hidden; }
 .character-avatar { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 3.5em; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.3); animation: bounce 2s ease-in-out infinite; }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
+.books-badge { display: inline-block; background: rgba(255,255,255,0.25); padding: 8px 16px; border-radius: 20px; margin-top: 10px; font-weight: bold; }
 .progress-bar-container { background: rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; margin: 20px 0; }
-.progress-bar { background: rgba(255,255,255,0.3); height: 20px; border-radius: 10px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffed4e); border-radius: 10px; transition: width 0.5s ease; }
+.progress-bar { background: rgba(255,255,255,0.3); height: 22px; border-radius: 11px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffed4e); border-radius: 11px; transition: width 0.6s ease; position: relative; overflow: hidden; }
+.progress-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); animation: shimmer 2s infinite; }
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 .quest-board { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 .quest-title { font-size: 1.6em; color: #4a5568; margin-bottom: 20px; }
-.quest-item { background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 15px; padding: 20px; margin-bottom: 15px; border-left: 5px solid #cbd5e0; transition: all 0.3s ease; }
-.quest-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+.quest-item { background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 15px; padding: 20px; margin-bottom: 15px; border-left: 5px solid #cbd5e0; transition: all 0.3s ease; animation: slideIn 0.4s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-25px); } to { opacity: 1; transform: translateX(0); } }
+.quest-item:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 .daily-quest { border-left-color: #48bb78; }
 .weekly-quest { border-left-color: #ed8936; }
 .monthly-quest { border-left-color: #9f7aea; }
 .quest-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
 .quest-name { font-size: 1.15em; font-weight: bold; color: #2d3748; }
-.quest-difficulty { color: #ffd700; font-size: 1.1em; }
+.quest-difficulty { color: #ffd700; font-size: 1.1em; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 .quest-reward { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #4a5568; flex-wrap: wrap; }
 .reward-coins { background: linear-gradient(45deg, #ffd700, #ffed4e); color: #333; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
 .quest-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.action-btn { padding: 12px 22px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+.action-btn { padding: 12px 22px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: all 0.25s ease; }
+.action-btn:hover { transform: scale(1.06); box-shadow: 0 5px 14px rgba(0,0,0,0.2); }
 .start-quest { background: linear-gradient(45deg, #4299e1, #3182ce); color: white; }
 .complete-quest { background: linear-gradient(45deg, #48bb78, #38a169); color: white; }
 .reject-btn { background: #e53e3e; color: white; }
 .quest-status { font-weight: bold; }
 .status-pending { color: #ed8936; animation: pulse 2s infinite; }
 .status-completed { color: #48bb78; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 .admin-section { background: #f7fafc; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
 .admin-title { font-size: 1.25em; font-weight: bold; margin-bottom: 15px; color: #4a5568; }
 .input-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; align-items: center; }
@@ -55,18 +64,32 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
 .danger-btn { background: #742a2a; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
 .modal.open { display: flex; }
-.modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 90%; text-align: center; max-height: 85vh; overflow-y: auto; }
+.modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 90%; text-align: center; max-height: 85vh; overflow-y: auto; animation: popIn 0.35s ease; }
+@keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .modal-title { font-size: 1.7em; margin-bottom: 20px; color: #4a5568; }
 .modal-input { padding: 15px; font-size: 1.2em; border: 3px solid #e2e8f0; border-radius: 10px; text-align: center; width: 100%; margin-bottom: 20px; text-transform: uppercase; }
 .modal-btn { background: linear-gradient(45deg, #4299e1, #3182ce); color: white; padding: 14px 26px; border: none; border-radius: 10px; font-size: 1em; font-weight: bold; cursor: pointer; margin: 6px; }
 .modal-btn.grey { background: #718096; }
-.spell-display { font-size: 2em; padding: 20px; background: #ffecf5; border-radius: 10px; margin: 20px 0; color: #d63384; font-weight: bold; letter-spacing: 4px; }
+.spell-display { font-size: 1.6em; padding: 20px; background: #ffecf5; border-radius: 10px; margin: 20px 0; color: #d63384; font-weight: bold; letter-spacing: 3px; }
+.typing-display { font-size: 1.4em; padding: 20px; background: #e6f7ff; border-radius: 10px; margin: 20px 0; color: #2b6cb0; font-weight: bold; }
 .hint-text { font-size: 0.9em; color: #666; font-style: italic; margin-bottom: 10px; }
 .celebration-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); z-index: 1001; display: none; max-width: 90%; }
-.celebration-popup.show { display: block; }
+.celebration-popup.show { display: block; animation: popIn 0.4s ease; }
 .achievement-notification { position: fixed; top: 20px; right: 20px; background: linear-gradient(45deg, #48bb78, #38a169); color: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transform: translateX(450px); transition: transform 0.3s ease; z-index: 1002; max-width: 320px; }
 .achievement-notification.show { transform: translateX(0); }
 .feedback-text { margin-top: 15px; font-weight: bold; min-height: 24px; }
+.particle { position: fixed; font-size: 20px; pointer-events: none; z-index: 1; animation: floatUp linear forwards; }
+@keyframes floatUp { from { transform: translateY(0) rotate(0deg); opacity: 0.9; } to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
+.confetti { position: fixed; font-size: 26px; pointer-events: none; z-index: 2000; animation: confettiFall 2.2s ease-out forwards; }
+@keyframes confettiFall { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 60% { transform: scale(1.4) rotate(180deg); opacity: 1; } 100% { transform: scale(0.6) rotate(360deg) translateY(60px); opacity: 0; } }
+.lb-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.lb-table th, .lb-table td { padding: 10px 6px; text-align: center; border-bottom: 2px solid #edf2f7; font-size: 0.95em; }
+.lb-table th { color: #4a5568; }
+.lb-today { background: #fefcbf; border-radius: 8px; }
+.lb-name { font-weight: bold; text-align: left; white-space: nowrap; }
+.lb-totals { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+.lb-card { flex: 1; min-width: 200px; background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 15px; padding: 18px; text-align: center; }
+.lb-card .big { font-size: 1.8em; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -80,6 +103,7 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
         <button class="mode-btn parent-mode" onclick="switchMode('parent')">👨‍👩‍👧‍👦 Quest Master</button>
         <button class="mode-btn child1-mode" onclick="switchMode('child1')">⚡ Harry's Wizarding Academy</button>
         <button class="mode-btn child2-mode" onclick="switchMode('child2')">🦄 Princess Unicorn Kingdom</button>
+        <button class="mode-btn leaderboard-mode" onclick="switchMode('leaderboard')">🏆 Leaderboard</button>
     </div>
 
     <!-- Parent Mode -->
@@ -87,7 +111,7 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
         <div class="admin-section">
             <h2 class="admin-title">⚙️ Quest Settings</h2>
             <div class="input-group">
-                <label>Stars needed for grand prize:</label>
+                <label>Stars needed to earn a new book:</label>
                 <input type="number" id="starsTarget" value="10" min="1" max="50">
                 <button class="add-btn" onclick="updateStarsTarget()">Update</button>
             </div>
@@ -99,12 +123,12 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
         <div class="admin-section">
             <h2 class="admin-title">➕ Create New Quest</h2>
             <div class="input-group">
-                <input type="text" id="newChoreName" placeholder="Quest name (e.g. clean the drawers)">
+                <input type="text" id="newChoreName" placeholder="Quest name (e.g. get school uniform ready)">
                 <input type="number" id="newChorePoints" min="1" max="10" value="1" style="width:80px;">
                 <select id="newChoreFreq">
-                    <option value="daily">Daily Quest</option>
-                    <option value="weekly">Weekly Quest</option>
-                    <option value="monthly">Epic Quest</option>
+                    <option value="daily">Everyday Job (resets daily)</option>
+                    <option value="weekly">Weekly Job</option>
+                    <option value="monthly">Monthly Job</option>
                 </select>
             </div>
             <div class="input-group">
@@ -113,9 +137,6 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
                 <label><input type="checkbox" id="assignChild2" checked> Princess (Royal)</label>
             </div>
             <button class="add-btn" onclick="addChore()">Create Quest</button>
-            <div style="margin-top:10px; font-size:0.9em; color:#666; font-style:italic;">
-                💡 Quest names are automatically themed for each child, and quests reset daily, weekly or monthly with fresh challenge questions.
-            </div>
         </div>
 
         <div class="admin-section">
@@ -133,10 +154,11 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
     <div id="child1-section" class="player-section">
         <div class="adventure-map">
             <div class="character-avatar">⚡</div>
-            <div style="font-size:1.4em; font-weight:bold; margin-bottom:15px;">Level <span id="child1-level">1</span> Wizard</div>
+            <div style="font-size:1.4em; font-weight:bold;">Level <span id="child1-level">1</span> Wizard</div>
+            <div class="books-badge">📚 Books earned: <span id="child1-books">0</span></div>
             <div class="progress-bar-container">
                 <div class="progress-bar"><div class="progress-fill" id="child1-progress-fill" style="width:0%;"></div></div>
-                <div style="margin-top:10px; font-weight:bold;"><span id="child1-stars-display">0</span> / <span id="child1-target-display">10</span> Magic Stars ⭐</div>
+                <div style="margin-top:10px; font-weight:bold;"><span id="child1-stars-display">0</span> / <span id="child1-target-display">10</span> Magic Stars ⭐ until your next book!</div>
             </div>
         </div>
         <div class="quest-board">
@@ -149,15 +171,25 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
     <div id="child2-section" class="player-section">
         <div class="adventure-map" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
             <div class="character-avatar">🦄</div>
-            <div style="font-size:1.4em; font-weight:bold; margin-bottom:15px;">Level <span id="child2-level">1</span> Princess</div>
+            <div style="font-size:1.4em; font-weight:bold;">Level <span id="child2-level">1</span> Princess</div>
+            <div class="books-badge">📚 Books earned: <span id="child2-books">0</span></div>
             <div class="progress-bar-container">
                 <div class="progress-bar"><div class="progress-fill" id="child2-progress-fill" style="width:0%; background: linear-gradient(90deg, #ff69b4, #ffc0cb);"></div></div>
-                <div style="margin-top:10px; font-weight:bold;"><span id="child2-stars-display">0</span> / <span id="child2-target-display">10</span> Royal Stars ⭐</div>
+                <div style="margin-top:10px; font-weight:bold;"><span id="child2-stars-display">0</span> / <span id="child2-target-display">10</span> Royal Stars ⭐ until your next book!</div>
             </div>
         </div>
         <div class="quest-board">
             <h2 class="quest-title">Royal Quests</h2>
             <div id="child2-quests"></div>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div id="leaderboard-section" class="player-section">
+        <div class="quest-board">
+            <h2 class="quest-title">🏆 This Week's Leaderboard</h2>
+            <p style="color:#718096; margin-bottom:10px;">Quests completed each day (last 7 days):</p>
+            <div id="leaderboard-content"></div>
         </div>
     </div>
 </div>
@@ -173,7 +205,7 @@ body { font-family: 'Comic Sans MS', cursive; background: linear-gradient(135deg
 <!-- Celebration -->
 <div class="celebration-popup" id="celebrationPopup">
     <h2>🎉 CONGRATULATIONS! 🎉</h2>
-    <p id="celebrationText" style="margin-top:15px;"></p>
+    <p id="celebrationText" style="margin-top:15px; white-space: pre-line;"></p>
     <div style="font-size:3em; margin:20px 0;">✨🌟🎊</div>
     <button class="modal-btn" onclick="closeCelebration()">Awesome!</button>
 </div>
@@ -195,23 +227,25 @@ var gameData = {
     chores: [
         { id: 1, name: "Make bed", points: 2, frequency: "daily", assignedTo: ["child1", "child2"] },
         { id: 2, name: "Put away toys", points: 1, frequency: "daily", assignedTo: ["child1", "child2"] },
-        { id: 3, name: "Clean room", points: 3, frequency: "weekly", assignedTo: ["child1", "child2"] },
+        { id: 3, name: "Get school uniform ready", points: 2, frequency: "daily", assignedTo: ["child1", "child2"] },
         { id: 4, name: "Put away clothes", points: 2, frequency: "daily", assignedTo: ["child1", "child2"] },
-        { id: 5, name: "Organise shoe cupboard", points: 4, frequency: "monthly", assignedTo: ["child1", "child2"] }
+        { id: 5, name: "Clean room", points: 3, frequency: "weekly", assignedTo: ["child1", "child2"] },
+        { id: 6, name: "Organise shoe cupboard", points: 4, frequency: "monthly", assignedTo: ["child1", "child2"] }
     ],
     players: {
-        child1: { name: "Harry", stars: 0, totalStars: 0, level: 1, completedChores: [], pendingChores: [], activeQuests: [] },
-        child2: { name: "Princess", stars: 0, totalStars: 0, level: 1, completedChores: [], pendingChores: [], activeQuests: [] }
+        child1: { name: "Harry", stars: 0, totalStars: 0, level: 1, books: 0, completedChores: [], pendingChores: [], activeQuests: [] },
+        child2: { name: "Princess", stars: 0, totalStars: 0, level: 1, books: 0, completedChores: [], pendingChores: [], activeQuests: [] }
     },
+    history: [],
     lastDailyKey: null,
     lastWeeklyKey: null,
     lastMonthlyKey: null
 };
 
 var currentMode = "child1";
-var nextChoreId = 6;
+var nextChoreId = 7;
 var parentAuthenticated = false;
-var currentChallenge = null;   // holds the active challenge so nothing is embedded in HTML
+var currentChallenge = null;
 var editingChoreId = null;
 var lastQuestion = { child1: "", child2: "" };
 
@@ -220,29 +254,31 @@ var choreThemes = {
     child1: {
         keywords: {
             "bed": "magical dormitory bed", "toys": "magical artifacts", "room": "Hogwarts dormitory",
-            "clothes": "wizard robes", "shoes": "magical footwear", "drawers": "magical storage chambers",
-            "kitchen": "potions laboratory", "dishes": "cauldrons and magical vessels",
-            "bathroom": "magical washroom", "books": "spellbooks", "desk": "study table",
-            "pets": "magical creatures", "table": "enchanted table", "floor": "chamber floor"
+            "clothes": "wizard robes", "uniform": "school wizard robes", "shoes": "magical footwear",
+            "drawers": "magical storage chambers", "kitchen": "potions laboratory",
+            "dishes": "cauldrons and magical vessels", "bathroom": "magical washroom",
+            "books": "spellbooks", "desk": "study table", "pets": "magical creatures",
+            "table": "enchanted table", "floor": "chamber floor"
         },
         verbs: {
             "make": "enchant", "clean": "purify", "organise": "arrange magically", "organize": "arrange magically",
             "put away": "store in magical order", "tidy": "cast tidying charms on", "wash": "cleanse with magic",
-            "feed": "tend to", "set": "prepare"
+            "feed": "tend to", "get": "prepare", "set": "prepare"
         }
     },
     child2: {
         keywords: {
             "bed": "royal princess bed", "toys": "royal treasures", "room": "princess chambers",
-            "clothes": "royal gowns", "shoes": "royal shoe collection", "drawers": "royal treasure drawers",
-            "kitchen": "royal kitchen", "dishes": "royal china and crystal",
-            "bathroom": "royal powder room", "books": "fairy tale collection", "desk": "royal writing desk",
-            "pets": "royal companions", "table": "banquet table", "floor": "palace floor"
+            "clothes": "royal gowns", "uniform": "royal school gown", "shoes": "royal shoe collection",
+            "drawers": "royal treasure drawers", "kitchen": "royal kitchen",
+            "dishes": "royal china and crystal", "bathroom": "royal powder room",
+            "books": "fairy tale collection", "desk": "royal writing desk", "pets": "royal companions",
+            "table": "banquet table", "floor": "palace floor"
         },
         verbs: {
             "make": "prepare royally", "clean": "beautify", "organise": "arrange elegantly", "organize": "arrange elegantly",
             "put away": "store in royal order", "tidy": "make palace-perfect", "wash": "cleanse with royal care",
-            "feed": "care for", "set": "decorate"
+            "feed": "care for", "get": "prepare", "set": "decorate"
         }
     }
 };
@@ -251,149 +287,141 @@ var choreThemes = {
 var challenges = {
     child1: {
         math: [
-            { question: "If you have 7 chocolate frogs and eat 3, then buy 5 more, how many do you have?", answer: "9" },
-            { question: "Hogwarts has 4 houses with 15 students each in your year. How many students in total?", answer: "60" },
-            { question: "A Quidditch match lasts 3 hours. How many minutes is that?", answer: "180" },
-            { question: "A spell requires 12 ingredients and you have 8. How many more do you need?", answer: "4" },
-            { question: "Ron has 25 wizard cards. He gives 7 to Harry and 6 to Hermione. How many are left?", answer: "12" },
-            { question: "Each dormitory has 5 beds. If there are 8 dormitories, how many beds in total?", answer: "40" },
-            { question: "Harry catches the Snitch in 9 out of 12 games. How many times did he miss it?", answer: "3" },
-            { question: "Hermione reads 8 pages every 15 minutes. How many pages in one hour?", answer: "32" },
-            { question: "A potion needs 6 drops of essence. If you make 7 potions, how many drops in total?", answer: "42" },
-            { question: "Diagon Alley has 24 shops. If one third are closed, how many are open?", answer: "16" },
-            { question: "You collect 45 Bertie Bott's beans and eat one fifth of them. How many are left?", answer: "36" },
-            { question: "A flying lesson is 90 minutes. How many 30-minute segments is that?", answer: "3" },
-            { question: "Gryffindor scored 120 points and Slytherin scored 95. What is the difference?", answer: "25" },
-            { question: "Dragon eggs cost 8 galleons each. How much do 9 eggs cost?", answer: "72" },
-            { question: "The Great Hall has 16 tables with 12 seats each. How many seats in total?", answer: "192" }
+            { question: "A wand costs 7 galleons. Harry buys 3 wands and pays with 25 galleons. How much change does he get?", answer: "4" },
+            { question: "144 students travel in 6 carriages, with the same number in each. How many students per carriage?", answer: "24" },
+            { question: "Fred and George have 96 fireworks. They sell half of them, then buy 20 more. How many do they have now?", answer: "68" },
+            { question: "A dragon egg weighs 12 kg. How much do 4 dragon eggs weigh?", answer: "48" },
+            { question: "Hermione answers 7 questions in every lesson. How many questions does she answer in 12 lessons?", answer: "84" },
+            { question: "A broomstick flies 60 km every hour. How far does it fly in 3 hours?", answer: "180" },
+            { question: "Gryffindor needs 150 points to win the House Cup. They have 87. How many more do they need?", answer: "63" },
+            { question: "There are 96 owls in the Owlery. One quarter fly away. How many flew away?", answer: "24" },
+            { question: "Each of 9 shelves holds 8 potion bottles. How many bottles in total?", answer: "72" },
+            { question: "A spellbook has 320 pages. Harry reads 40 pages a day. How many days to finish it?", answer: "8" },
+            { question: "56 chocolate frogs are shared equally between 7 students. How many does each get?", answer: "8" },
+            { question: "Double 47, then subtract 14. What do you get?", answer: "80" },
+            { question: "A Quidditch season has 12 matches. Each match needs 14 players. How many player spots is that in total?", answer: "168" },
+            { question: "Snape brews 135 potions. 78 of them are perfect. How many are not perfect?", answer: "57" },
+            { question: "A crup dog is 3 years old. How many months old is it?", answer: "36" },
+            { question: "One third of 66 Bertie Bott's beans are earwax flavour. How many is that?", answer: "22" },
+            { question: "A train travels for 5 hours at 74 km per hour. How far does it travel?", answer: "370" },
+            { question: "Harry has 250 galleons. He spends 89 on a broom and 45 on robes. How much is left?", answer: "116" }
         ],
         riddles: [
             { question: "I fly without wings, I see without eyes. I am used in Quidditch. What am I?", answer: "SNITCH" },
-            { question: "Three heads I have, but one body. Fluffy am I. What creature could I be?", answer: "CERBERUS" },
+            { question: "The more you take away from me, the bigger I become. What am I?", answer: "HOLE" },
+            { question: "I belong to you, but other wizards say me far more than you do. What am I?", answer: "NAME" },
             { question: "I change my form but keep my mind, leaving my body far behind. What am I?", answer: "ANIMAGUS" },
-            { question: "I am a sport with four balls, played up high. Catch one small ball and you will surely fly. What sport?", answer: "QUIDDITCH" },
-            { question: "I have no body, yet I can think. I speak without a voice. What am I?", answer: "GHOST" },
+            { question: "I have cities but no houses, forests but no trees, and rivers but no water. What am I?", answer: "MAP" },
             { question: "I am made of stone but come alive, to guard the school where wizards thrive. What am I?", answer: "GARGOYLE" },
-            { question: "I sort you into houses four, based on traits at your core. What am I?", answer: "HAT" },
+            { question: "I get wetter and wetter the more I dry. What am I?", answer: "TOWEL" },
             { question: "I am long and thin, made of wood. For casting spells I am very good. What am I?", answer: "WAND" },
-            { question: "I fly through the air delivering mail, through storm and sun I never fail. What am I?", answer: "OWL" },
+            { question: "I speak without a mouth and hear without ears. I answer in the mountains. What am I?", answer: "ECHO" },
             { question: "I guard a vault with treasure bright. I breathe fire and am quite a sight. What am I?", answer: "DRAGON" },
-            { question: "I make you vanish when worn on your head or shoulders. What am I?", answer: "CLOAK" },
-            { question: "I show you things that are not there, reflections beyond compare. What am I?", answer: "MIRROR" }
+            { question: "What has hands but cannot clap?", answer: "CLOCK" },
+            { question: "I show you things that are not there, your deepest wishes beyond compare. What am I?", answer: "MIRROR" }
         ],
         spells: [
             { question: "Complete the flying charm: Wingardium ...?", answer: "LEVIOSA" },
-            { question: "What spell makes your wand light up?", answer: "LUMOS" },
-            { question: "What spell unlocks doors?", answer: "ALOHOMORA" },
             { question: "What spell disarms your opponent?", answer: "EXPELLIARMUS" },
             { question: "What spell creates a protective shield?", answer: "PROTEGO" },
-            { question: "What creature guards Gringotts bank?", answer: "DRAGON" },
             { question: "Spell Hermione's last name.", hint: "Sounds a bit like 'danger'", answer: "GRANGER" },
-            { question: "Which house is known for bravery?", answer: "GRYFFINDOR" },
             { question: "Which house values loyalty and hard work?", answer: "HUFFLEPUFF" },
+            { question: "Which house is known for cleverness and wit?", answer: "RAVENCLAW" },
             { question: "What position does Harry play in Quidditch?", answer: "SEEKER" },
             { question: "What is Dumbledore's first name?", answer: "ALBUS" },
-            { question: "What is the last name of the potions master, Severus ...?", answer: "SNAPE" }
+            { question: "What is the last name of the potions master, Severus ...?", answer: "SNAPE" },
+            { question: "What do you call a person with no magic born to magical parents?", answer: "SQUIB" },
+            { question: "What magical plant screams when you pull it from its pot?", answer: "MANDRAKE" },
+            { question: "What is the name of Hagrid's giant three-headed dog?", answer: "FLUFFY" }
         ],
         logic: [
-            { question: "All wizards have wands. Harry is a wizard. Does Harry have a wand? (yes or no)", answer: "YES" },
             { question: "Hermione is smarter than Ron. Ron is smarter than Neville. Who is the smartest?", answer: "HERMIONE" },
-            { question: "Quidditch is played in the air, and broomsticks fly. What do you need to play Quidditch?", answer: "BROOMSTICK" },
-            { question: "Every Gryffindor is brave. Harry is in Gryffindor. Is Harry brave? (yes or no)", answer: "YES" },
-            { question: "Dragons breathe fire. Norbert is a dragon. What does Norbert breathe?", answer: "FIRE" },
-            { question: "Owls deliver the mail at Hogwarts. If you want to send a letter, what do you need?", answer: "OWL" },
-            { question: "Potions class is in the dungeon. The dungeon is underground. Where is Potions class?", answer: "UNDERGROUND" },
-            { question: "The Sorting Hat sorts every new student. You are a new student. What sorts you?", answer: "HAT" }
+            { question: "A potion doubles in size every hour. It fills the cauldron after 6 hours. After how many hours was it half full?", answer: "5" },
+            { question: "Three friends share 2 pizzas cut into 6 slices each. If they share equally, how many slices each?", answer: "4" },
+            { question: "Today is Wednesday. Quidditch practice is in 5 days. What day is practice?", answer: "MONDAY" },
+            { question: "If some Puffskeins are pink and all pink creatures are friendly, are some Puffskeins friendly? (yes or no)", answer: "YES" },
+            { question: "Ginny is older than Luna but younger than Ron. Who is the oldest of the three?", answer: "RON" },
+            { question: "A password has 3 numbers that add up to 12. The first two are 5 and 4. What is the third?", answer: "3" },
+            { question: "Every dragon sleeps by day. Norbert is a dragon. When does Norbert sleep?", answer: "DAY" }
         ]
     },
     child2: {
+        typing: [
+            { question: "Type this sentence exactly:", sentence: "I LOVE MY UNICORN" },
+            { question: "Type this sentence exactly:", sentence: "THE PRINCESS IS KIND" },
+            { question: "Type this sentence exactly:", sentence: "MY CROWN IS PINK" },
+            { question: "Type this sentence exactly:", sentence: "WE DANCE ALL DAY" },
+            { question: "Type this sentence exactly:", sentence: "THE CASTLE IS BIG" },
+            { question: "Type this sentence exactly:", sentence: "I CAN HELP MUM" },
+            { question: "Type this sentence exactly:", sentence: "STARS SHINE AT NIGHT" },
+            { question: "Type this sentence exactly:", sentence: "MY CAT IS SOFT" },
+            { question: "Type this sentence exactly:", sentence: "I LIKE TO READ BOOKS" },
+            { question: "Type this sentence exactly:", sentence: "THE FAIRY CAN FLY" },
+            { question: "Type this sentence exactly:", sentence: "PINK IS MY COLOUR" },
+            { question: "Type this sentence exactly:", sentence: "I AM A GOOD HELPER" }
+        ],
         spelling: [
             { question: "Spell this magical word:", word: "LOVE", display: "L-O-V-E" },
             { question: "Spell this royal word:", word: "ROSE", display: "R-O-S-E" },
             { question: "Spell this pretty word:", word: "STAR", display: "S-T-A-R" },
             { question: "Spell this sweet word:", word: "CAKE", display: "C-A-K-E" },
-            { question: "Spell this magical word:", word: "MOON", display: "M-O-O-N" },
-            { question: "Spell this beautiful word:", word: "PINK", display: "P-I-N-K" },
             { question: "Spell this royal word:", word: "CROWN", display: "C-R-O-W-N" },
             { question: "Spell this magical word:", word: "MAGIC", display: "M-A-G-I-C" },
             { question: "Spell this happy word:", word: "SMILE", display: "S-M-I-L-E" },
-            { question: "Spell this sparkly word:", word: "SHINE", display: "S-H-I-N-E" },
             { question: "Spell this dreamy word:", word: "DREAM", display: "D-R-E-A-M" },
-            { question: "Spell this gentle word:", word: "SOFT", display: "S-O-F-T" },
-            { question: "Spell this fun word:", word: "PLAY", display: "P-L-A-Y" },
-            { question: "Spell this kind word:", word: "NICE", display: "N-I-C-E" },
             { question: "Spell this royal word:", word: "QUEEN", display: "Q-U-E-E-N" },
-            { question: "Spell this magical word:", word: "WISH", display: "W-I-S-H" },
             { question: "Spell this precious word:", word: "JEWEL", display: "J-E-W-E-L" },
-            { question: "Spell this dancing word:", word: "DANCE", display: "D-A-N-C-E" }
+            { question: "Spell this dancing word:", word: "DANCE", display: "D-A-N-C-E" },
+            { question: "Spell this sparkly word:", word: "SHINE", display: "S-H-I-N-E" }
         ],
         counting: [
             { question: "Count the hearts: ❤️❤️❤️", answer: "3" },
             { question: "Count the stars: ⭐⭐⭐⭐⭐", answer: "5" },
-            { question: "Count the flowers: 🌸🌸🌸🌸", answer: "4" },
-            { question: "Count the unicorns: 🦄🦄", answer: "2" },
-            { question: "Count the crowns: 👑👑👑👑👑👑", answer: "6" },
             { question: "Count the butterflies: 🦋🦋🦋🦋🦋🦋🦋", answer: "7" },
             { question: "Count the rainbows: 🌈🌈🌈🌈🌈🌈🌈🌈", answer: "8" },
             { question: "Count the castles: 🏰🏰🏰🏰🏰🏰🏰🏰🏰", answer: "9" },
             { question: "Count the diamonds: 💎💎💎💎💎💎💎💎💎💎", answer: "10" },
             { question: "Count the cupcakes: 🧁🧁🧁🧁🧁🧁", answer: "6" },
-            { question: "Count the balloons: 🎈🎈🎈🎈🎈", answer: "5" },
-            { question: "Count the gifts: 🎁🎁🎁🎁", answer: "4" },
-            { question: "Count the dresses: 👗👗👗👗👗👗👗", answer: "7" },
-            { question: "Count the tiaras: 👸👸👸", answer: "3" }
+            { question: "Count the gifts: 🎁🎁🎁🎁", answer: "4" }
         ],
         math: [
-            { question: "What is 2 + 1?", answer: "3" },
-            { question: "What is 4 + 1?", answer: "5" },
             { question: "What is 3 + 2?", answer: "5" },
             { question: "What is 5 - 1?", answer: "4" },
-            { question: "What is 6 - 2?", answer: "4" },
-            { question: "What is 1 + 1?", answer: "2" },
             { question: "What is 3 + 3?", answer: "6" },
-            { question: "What is 4 + 2?", answer: "6" },
             { question: "What is 7 - 3?", answer: "4" },
-            { question: "What is 8 - 4?", answer: "4" },
             { question: "What is 6 + 1?", answer: "7" },
             { question: "What is 5 + 2?", answer: "7" },
             { question: "What is 9 - 1?", answer: "8" },
-            { question: "What is 10 - 2?", answer: "8" }
+            { question: "What is 10 - 2?", answer: "8" },
+            { question: "What is 4 + 4?", answer: "8" },
+            { question: "What is 10 - 5?", answer: "5" }
         ],
         questions: [
             { question: "What colour do you get when you mix red and white?", answer: "PINK" },
             { question: "What do princesses wear on their heads?", answer: "CROWN" },
             { question: "What magical creature has one horn?", answer: "UNICORN" },
-            { question: "What shape is the sun?", answer: "CIRCLE" },
-            { question: "How many legs does a unicorn have?", answer: "4" },
-            { question: "What colour do you get when you mix yellow and red?", answer: "ORANGE" },
-            { question: "What do bees make that is sweet?", answer: "HONEY" },
-            { question: "What animal says meow?", answer: "CAT" },
-            { question: "What do we call frozen water?", answer: "ICE" },
-            { question: "What red fruit grows on trees and keeps the doctor away?", answer: "APPLE" },
-            { question: "What colour is grass?", answer: "GREEN" },
-            { question: "What do birds use to fly?", answer: "WINGS" },
-            { question: "What day comes after Monday?", answer: "TUESDAY" },
             { question: "How many days are in a week?", answer: "7" },
+            { question: "What day comes after Monday?", answer: "TUESDAY" },
             { question: "What season comes after winter?", answer: "SPRING" },
             { question: "What colour do you get when you mix blue and yellow?", answer: "GREEN" },
-            { question: "What animal gives us milk?", answer: "COW" },
             { question: "What meal do you eat in the morning?", answer: "BREAKFAST" }
         ]
     }
 };
 
 var challengeTitles = {
-    math1: "🧮 Mathematical Challenge",
+    math1: "🧮 Wizard Maths Challenge",
     riddles: "🧩 Riddle Challenge",
     spells: "⚡ Spell Challenge",
     logic: "🤔 Logic Challenge",
+    typing: "⌨️ Typing Magic Challenge",
     spelling: "✨ Spelling Magic Challenge",
     counting: "🔢 Counting Challenge",
-    math2: "➕ Princess Math",
+    math2: "➕ Princess Maths",
     questions: "🌈 Royal Questions"
 };
 
-// ================= HELPERS =================
+    // ================= HELPERS =================
 function escapeHtml(text) {
     var div = document.createElement("div");
     div.appendChild(document.createTextNode(text));
@@ -421,6 +449,10 @@ function getThemedChoreName(originalName, childId) {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+function dayKeyOf(d) {
+    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+}
+
 // ================= RESET SYSTEM =================
 function getWeekKey(d) {
     var date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -446,8 +478,7 @@ function resetFrequency(frequency) {
             var before = player.completedChores.length + player.activeQuests.length;
             player.completedChores = player.completedChores.filter(function(id) { return id !== chore.id; });
             player.activeQuests = player.activeQuests.filter(function(id) { return id !== chore.id; });
-            var after = player.completedChores.length + player.activeQuests.length;
-            totalCleared += (before - after);
+            totalCleared += before - (player.completedChores.length + player.activeQuests.length);
         }
     }
     return totalCleared;
@@ -556,6 +587,7 @@ function updateDisplay() {
     updateQuestDisplay();
     updateAdminDisplay();
     updatePendingApprovals();
+    updateLeaderboard();
 }
 
 function updatePlayerProgress() {
@@ -565,10 +597,12 @@ function updatePlayerProgress() {
         var starsEl = document.getElementById(child + "-stars-display");
         var targetEl = document.getElementById(child + "-target-display");
         var levelEl = document.getElementById(child + "-level");
+        var booksEl = document.getElementById(child + "-books");
         if (fill) fill.style.width = Math.min((player.stars / gameData.starsTarget) * 100, 100) + "%";
         if (starsEl) starsEl.textContent = player.stars;
         if (targetEl) targetEl.textContent = gameData.starsTarget;
         if (levelEl) levelEl.textContent = player.level;
+        if (booksEl) booksEl.textContent = player.books;
     }
 }
 
@@ -605,6 +639,7 @@ function updateQuestDisplay() {
             }
 
             var questClass = chore.frequency === "daily" ? "daily-quest" : (chore.frequency === "weekly" ? "weekly-quest" : "monthly-quest");
+            var freqLabel = chore.frequency === "daily" ? "everyday job" : (chore.frequency === "weekly" ? "weekly job" : "monthly job");
             var stars = "";
             for (var s = 0; s < 5; s++) stars += (s < chore.points ? "★" : "☆");
 
@@ -613,7 +648,7 @@ function updateQuestDisplay() {
                 '<div class="quest-name">' + escapeHtml(getThemedChoreName(chore.name, child)) + '</div>' +
                 '<div class="quest-difficulty">' + stars + '</div>' +
                 '</div>' +
-                '<div class="quest-reward"><span>Reward:</span><span class="reward-coins">' + chore.points + ' ⭐</span><span>' + chore.frequency + ' quest</span></div>' +
+                '<div class="quest-reward"><span>Reward:</span><span class="reward-coins">' + chore.points + ' ⭐</span><span>' + freqLabel + '</span></div>' +
                 '<div class="quest-actions">' + statusHtml + actionHtml + '</div>' +
                 '</div>';
         }
@@ -679,6 +714,67 @@ function updatePendingApprovals() {
     container.innerHTML = html;
 }
 
+// ================= LEADERBOARD =================
+function updateLeaderboard() {
+    var container = document.getElementById("leaderboard-content");
+    if (!container) return;
+
+    var days = [];
+    var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var i;
+    for (i = 6; i >= 0; i--) {
+        var d = new Date();
+        d.setDate(d.getDate() - i);
+        days.push({ key: dayKeyOf(d), label: dayNames[d.getDay()], isToday: i === 0 });
+    }
+
+    var counts = { child1: {}, child2: {} };
+    var weekJobs = { child1: 0, child2: 0 };
+    var weekStars = { child1: 0, child2: 0 };
+    for (i = 0; i < gameData.history.length; i++) {
+        var entry = gameData.history[i];
+        for (var dIdx = 0; dIdx < days.length; dIdx++) {
+            if (entry.date === days[dIdx].key && counts[entry.child]) {
+                counts[entry.child][entry.date] = (counts[entry.child][entry.date] || 0) + 1;
+                weekJobs[entry.child] += 1;
+                weekStars[entry.child] += entry.points;
+            }
+        }
+    }
+
+    var html = '<table class="lb-table"><tr><th class="lb-name">Champion</th>';
+    for (i = 0; i < days.length; i++) {
+        html += '<th class="' + (days[i].isToday ? "lb-today" : "") + '">' + days[i].label + '</th>';
+    }
+    html += '<th>Week</th></tr>';
+
+    var rows = [
+        { child: "child1", icon: "⚡", name: "Harry" },
+        { child: "child2", icon: "🦄", name: "Princess" }
+    ];
+    for (var r = 0; r < rows.length; r++) {
+        html += '<tr><td class="lb-name">' + rows[r].icon + ' ' + rows[r].name + '</td>';
+        for (i = 0; i < days.length; i++) {
+            var c = counts[rows[r].child][days[i].key] || 0;
+            html += '<td class="' + (days[i].isToday ? "lb-today" : "") + '">' + (c > 0 ? "✅ " + c : "—") + '</td>';
+        }
+        html += '<td><strong>' + weekJobs[rows[r].child] + '</strong></td></tr>';
+    }
+    html += '</table>';
+
+    var leader = "It's a tie this week! 🤝";
+    if (weekStars.child1 > weekStars.child2) leader = "⚡ Harry is leading this week!";
+    if (weekStars.child2 > weekStars.child1) leader = "🦄 Princess is leading this week!";
+
+    html += '<div class="lb-totals">' +
+        '<div class="lb-card">⚡ Harry<br><span class="big">' + weekStars.child1 + ' ⭐</span><br>this week<br>📚 ' + gameData.players.child1.books + ' books earned</div>' +
+        '<div class="lb-card">🦄 Princess<br><span class="big">' + weekStars.child2 + ' ⭐</span><br>this week<br>📚 ' + gameData.players.child2.books + ' books earned</div>' +
+        '</div>' +
+        '<p style="text-align:center; margin-top:20px; font-size:1.2em; font-weight:bold; color:#4a5568;">' + leader + '</p>';
+
+    container.innerHTML = html;
+}
+
 // ================= QUEST ACTIONS =================
 function startQuest(choreId, child) {
     var player = gameData.players[child];
@@ -714,7 +810,7 @@ function pickChallenge(child) {
 function showChallenge(choreId, child) {
     var choice = pickChallenge(child);
     var item = choice.item;
-    var answer = (item.answer || item.word).toUpperCase();
+    var answer = (item.answer || item.word || item.sentence).toUpperCase();
     currentChallenge = { answer: answer, choreId: choreId, child: child };
 
     var titleKey = choice.type;
@@ -722,13 +818,16 @@ function showChallenge(choreId, child) {
     var title = challengeTitles[titleKey] || "🎮 Quest Challenge";
 
     var body = '<p style="font-size:1.1em; margin-bottom:15px;">' + escapeHtml(item.question) + '</p>';
+    if (item.sentence) {
+        body += '<div class="typing-display">' + escapeHtml(item.sentence) + '</div>';
+    }
     if (item.display) {
         body += '<div class="spell-display">' + escapeHtml(item.display) + '</div><p style="margin-bottom:10px;">Now you spell it:</p>';
     }
     if (item.hint) {
         body += '<div class="hint-text">💡 Hint: ' + escapeHtml(item.hint) + '</div>';
     }
-    body += '<input type="text" class="modal-input" id="challengeInput" placeholder="Your answer...">' +
+    body += '<input type="text" class="modal-input" id="challengeInput" placeholder="Type here...">' +
         '<div>' +
         '<button class="modal-btn" onclick="submitChallengeAnswer()">Submit Answer!</button>' +
         '<button class="modal-btn grey" onclick="skipChallengeNow()">Skip</button>' +
@@ -744,9 +843,10 @@ function submitChallengeAnswer() {
     var input = document.getElementById("challengeInput");
     var feedback = document.getElementById("modal-feedback");
     if (!input || !feedback) return;
-    var userAnswer = input.value.trim().toUpperCase();
+    var userAnswer = input.value.trim().toUpperCase().replace(/\s+/g, " ");
+    var correct = currentChallenge.answer.replace(/\s+/g, " ");
 
-    if (userAnswer === currentChallenge.answer) {
+    if (userAnswer === correct) {
         feedback.style.color = "#48bb78";
         feedback.textContent = currentChallenge.child === "child1" ? "🎉 Excellent work, wizard!" : "✨ Perfect! You are amazing! 👑";
         var c = currentChallenge;
@@ -790,6 +890,11 @@ function approveChore(choreId, child) {
     player.stars += chore.points;
     player.totalStars += chore.points;
 
+    gameData.history.push({ date: dayKeyOf(new Date()), child: child, choreId: choreId, points: chore.points });
+    if (gameData.history.length > 500) {
+        gameData.history = gameData.history.slice(gameData.history.length - 500);
+    }
+
     var newLevel = Math.floor(player.totalStars / 5) + 1;
     if (newLevel > player.level) {
         player.level = newLevel;
@@ -797,8 +902,10 @@ function approveChore(choreId, child) {
     }
 
     if (player.stars >= gameData.starsTarget) {
-        showCelebration("🎊 GRAND PRIZE WINNER! 🎊\n" + player.name + " has earned " + gameData.starsTarget + " stars! Time to claim your amazing reward! 🎁");
+        player.books += 1;
         player.stars = 0;
+        launchConfetti();
+        showCelebration("📚 NEW BOOK EARNED! 📚\n" + player.name + " reached " + gameData.starsTarget + " stars and earned book number " + player.books + " for their collection!\nTime to choose your new book! 🎁");
     }
 
     updateDisplay();
@@ -861,7 +968,7 @@ function updateStarsTarget() {
         gameData.starsTarget = newTarget;
         updateDisplay();
         saveGameData();
-        showAchievement("Grand prize target updated! 🎯");
+        showAchievement("Book target updated! 🎯");
     }
 }
 
@@ -877,11 +984,6 @@ function editAssignment(choreId) {
         '<div style="text-align:left; margin:20px 0;">' +
         '<label style="display:block; margin-bottom:15px; font-size:1.1em;"><input type="checkbox" id="editAssignChild1"' + (c1 ? " checked" : "") + '> ⚡ Harry (Wizard Theme)</label>' +
         '<label style="display:block; margin-bottom:15px; font-size:1.1em;"><input type="checkbox" id="editAssignChild2"' + (c2 ? " checked" : "") + '> 🦄 Princess (Royal Theme)</label>' +
-        '</div>' +
-        '<div style="margin:20px 0; padding:15px; background:#f0f8ff; border-radius:10px; font-size:0.9em; text-align:left;">' +
-        '<strong>Preview:</strong><br>' +
-        '<strong>Harry sees:</strong> "' + escapeHtml(getThemedChoreName(chore.name, "child1")) + '"<br>' +
-        '<strong>Princess sees:</strong> "' + escapeHtml(getThemedChoreName(chore.name, "child2")) + '"' +
         '</div>' +
         '<button class="modal-btn" onclick="saveAssignment()">Save Assignment</button>' +
         '<button class="modal-btn grey" onclick="closeModal()">Cancel</button>'
@@ -902,13 +1004,13 @@ function saveAssignment() {
 }
 
 function resetAllData() {
-    if (confirm("This will erase ALL progress, stars and custom quests. Are you sure?")) {
+    if (confirm("This will erase ALL progress, stars, books and custom quests. Are you sure?")) {
         try { localStorage.removeItem("choreAdventureData"); } catch (e) {}
         location.reload();
     }
 }
 
-// ================= NOTIFICATIONS =================
+// ================= NOTIFICATIONS & EFFECTS =================
 function showAchievement(text) {
     var n = document.getElementById("achievementNotification");
     document.getElementById("achievementText").textContent = text;
@@ -923,6 +1025,46 @@ function showCelebration(text) {
 
 function closeCelebration() {
     document.getElementById("celebrationPopup").classList.remove("show");
+}
+
+function launchConfetti() {
+    var pieces = ["🎉", "🎊", "⭐", "📚", "✨", "🌟", "💫"];
+    for (var i = 0; i < 24; i++) {
+        (function(index) {
+            setTimeout(function() {
+                var el = document.createElement("div");
+                el.className = "confetti";
+                el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+                el.style.left = (5 + Math.random() * 90) + "%";
+                el.style.top = (10 + Math.random() * 60) + "%";
+                document.body.appendChild(el);
+                setTimeout(function() {
+                    if (el.parentNode) el.parentNode.removeChild(el);
+                }, 2300);
+            }, index * 80);
+        })(i);
+    }
+}
+
+function spawnParticle() {
+    var symbols = ["⭐", "✨", "🌟", "💫"];
+    var el = document.createElement("div");
+    el.className = "particle";
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = Math.random() * 100 + "%";
+    el.style.bottom = "-30px";
+    el.style.animationDuration = (6 + Math.random() * 5) + "s";
+    document.body.appendChild(el);
+    setTimeout(function() {
+        if (el.parentNode) el.parentNode.removeChild(el);
+    }, 11500);
+}
+
+function startParticles() {
+    for (var i = 0; i < 6; i++) {
+        setTimeout(spawnParticle, i * 800);
+    }
+    setInterval(spawnParticle, 2500);
 }
 
 // ================= SAVE / LOAD =================
@@ -940,7 +1082,11 @@ function loadGameData() {
             for (var key in data) {
                 gameData[key] = data[key];
             }
-            var maxId = 5;
+            if (!gameData.history) gameData.history = [];
+            for (var child in gameData.players) {
+                if (gameData.players[child].books === undefined) gameData.players[child].books = 0;
+            }
+            var maxId = 6;
             for (var i = 0; i < gameData.chores.length; i++) {
                 if (gameData.chores[i].id > maxId) maxId = gameData.chores[i].id;
             }
@@ -953,6 +1099,7 @@ function loadGameData() {
 function init() {
     loadGameData();
     checkAndResetChores();
+    startParticles();
     switchMode("child1");
 }
 
